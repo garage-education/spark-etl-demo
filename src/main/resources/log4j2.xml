@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%d{YYYY-MM-dd HH:mm:ss} %highlight{%-5level}{FATAL=red blink, ERROR=red, DEBUG=yellow bold, INFO=green bold, DEBUG=blue bold, TRACE=cyan} %style{%replace{%c{1}}{\$}{}:%L}{cyan} - %m%n"
+                    disableAnsi="false"/>
+        </Console>
+        <File name="MyFile" fileName="logs/etl.log">
+            <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="ConsoleAppender"/>
+            <appenderRef ref="MyFile"/>
+
+        </Root>
+        <Logger name="com.gability.scala" level="${sys:modelLogLevel:-DEBUG}"/>
+    </Loggers>
+</Configuration>

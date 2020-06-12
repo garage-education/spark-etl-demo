@@ -1,0 +1,42 @@
+{
+  "sourceName": "3G_ERCSN",
+  "inputFilesType":"csv",
+  "dataFileDelimiter": "|",
+  "totalInputFileColumns": "5",
+  "inputSourcePath": "/home/moustafa/Scala/spark-template-job/data/raw_zone/3G_ERCSN/",
+  "rejectedRecordsPath": "/data/processed/3G_ERCSN/",
+  "rejectOutputType": "csv",
+  "targetTables": ["Singl_KPI"],
+  "saveMode": "Append",
+  "processingSuffix": "*_processing",
+  "outputFormat": "orc",
+  "header": "false",
+  "partitionColumns": "event_date,batch_id",
+  "inputSchema": [
+    {
+      "columnName": "C0",
+      "columnType": "IntegerType",
+      "isNullable": true
+    },
+    {
+      "columnName": "C1",
+      "columnType": "StringType",
+      "isNullable": true
+    },
+    {
+      "columnName": "C2",
+      "columnType": "StringType",
+      "isNullable": true
+    },
+    {
+      "columnName": "C3",
+      "columnType": "StringType",
+      "isNullable": true
+    },
+    {
+      "columnName": "C4",
+      "columnType": "TimestampType",
+      "isNullable": true
+    }
+  ]
+}
