@@ -2,7 +2,7 @@ package com.gability.scala
 
 import java.sql.Timestamp
 
-import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType, TimestampType}
+import org.apache.spark.sql.types.{IntegerType, LongType, StringType, StructField, StructType, TimestampType}
 
 object Metadata {
 
@@ -12,7 +12,10 @@ object Metadata {
         StructField("b", StringType, false) ::
         StructField("c", StringType, false) ::
         StructField("d", StringType, false) ::
-        StructField("e", TimestampType, false) :: Nil
+        StructField("e", TimestampType, false) ::
+        StructField("f", StringType, false) :: Nil
     )
-  case class InputRow(a: Int, b: String, c: String, d: String, e: Timestamp)
+
+  case class ErcsvInputData(custId: String, custName: String, custCity: String)
+  final case class InputRow(a: Int, b: String, c: String, d: String, e: Timestamp)
 }

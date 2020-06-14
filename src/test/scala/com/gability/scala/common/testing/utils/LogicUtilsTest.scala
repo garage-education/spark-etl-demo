@@ -1,12 +1,11 @@
 package com.gability.scala.common.testing.utils
 
-import com.gability.scala.common.utils.LogicUtils
 import com.holdenkarau.spark.testing._
 import org.apache.spark.sql.Dataset
 import org.scalatest.{FunSuite, Matchers}
 
 class LogicUtilsTest extends FunSuite with Matchers with DatasetSuiteBase {
-/*  var logic: LogicUtils = _
+  /*  var logic: LogicUtils = _
   override lazy val spark = SparkSessionProvider._sparkSession
   //same logic could be applied on identity data
   test("Testing readCsvWithFileNameAsColumn logic on checksdata ") {

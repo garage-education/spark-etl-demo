@@ -1,6 +1,6 @@
 package com.gability.scala.common.io
 
-import java.io.{File, FileInputStream, FileOutputStream, InputStream}
+import java.io.{File, FileInputStream, FileNotFoundException, FileOutputStream, InputStream, IOException}
 import java.nio.file.{Files, Paths}
 import java.util.zip.ZipInputStream
 
@@ -30,10 +30,16 @@ object FilesHandler {
 
   //TODO: add function documentation header
   def getFilePath(path: String): String = {
-    Try(getClass.getResource(path).getPath)
-      .getOrElse(
-        throw new IllegalArgumentException("Path not found Exception, Path= %s".format(path))//TODO: create exception types
-      )
+    Try {
+      getClass.getResource(path).getPath
+    }.getOrElse(
+      throw new IllegalArgumentException("Path not found Exception, Path= %s".format(path)) //TODO: create exception types
+    )
+    /*catch {
+      case e: FileNotFoundException => println("Couldn't find that file.")
+      case e: IOException => println("Got an IOException!")
+    }*/
+
   }
 
   //TODO: add function documentation
@@ -49,10 +55,9 @@ object FilesHandler {
     */
   def readResourceFile(filePath: String): Try[String] =
     Try {
-      val jsonFile= new File(getResourceTestPath(filePath))
+      val jsonFile = new File(getResourceTestPath(filePath))
       Source.fromFile(jsonFile).getLines().mkString
     }
-
 
   /** getListOfFiles given input and extension pattern filter
     *
@@ -61,9 +66,7 @@ object FilesHandler {
     * @param filesLimit :Int number of files to get from the list
     * @return List[File] list of input path dir filtered by the extension
     */
-  def getListOfFiles(dir: String,
-                     extension: String,
-                     filesLimit: Int): List[File] = {
+  def getListOfFiles(dir: String, extension: String, filesLimit: Int): List[File] = {
     val allFilesList = new File(dir).listFiles
       .filter(_.isFile)
       .toList

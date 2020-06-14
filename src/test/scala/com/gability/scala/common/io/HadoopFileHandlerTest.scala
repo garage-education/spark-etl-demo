@@ -20,19 +20,19 @@ class HadoopFileHandlerTest extends FunSuite with Matchers with BeforeAndAfter w
     import spark.implicits._
 
     val (actualValidDt: Dataset[Row], actualInvalidDt: Dataset[Row]) = readDelimitedFile(param, ercsnStructSchema, spark)
-
+    val fileName = "ercsn_3g_20200512182929_part01"
     val expectedInvalid: Seq[Row] = Seq(
-      Row("SSSSSS", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14"),
-      Row("42456", "STRING1", null, null, null),
-      Row("SSSSS", null, null, null, null)
+      Row("SSSSSS", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
+      Row("42456", "STRING1", null, null, null, fileName),
+      Row("SSSSS", null, null, null, null, fileName)
     )
 
     val expectedValid: Dataset[Row] = Seq(
-      (12456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14"),
-      (22456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14"),
-      (32456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14"),
-      (42456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14")
-    ).toDF("_c0", "_c1", "_c2", "_c3", "_c4")
+      (12456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
+      (22456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
+      (32456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
+      (42456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName)
+    ).toDF("_c0", "_c1", "_c2", "_c3", "_c4", "file_name")
 
     actualInvalidDt.collect.toSeq shouldEqual (expectedInvalid)
     assertDataFrameDataEquals(expectedValid, actualValidDt)
