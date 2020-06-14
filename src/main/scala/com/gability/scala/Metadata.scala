@@ -17,5 +17,6 @@ object Metadata {
     )
 
   case class ErcsvInputData(custId: String, custName: String, custCity: String)
+
   final case class InputRow(a: Int, b: String, c: String, d: String, e: Timestamp)
 }
