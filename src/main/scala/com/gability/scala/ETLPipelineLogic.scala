@@ -1,14 +1,11 @@
 package com.gability.scala
 
-import com.gability.scala.common.config.ETLConfigManagement
 import com.gability.scala.common.io.HadoopFileHandler
 import com.gability.scala.common.metadata.Metadata.{JobConfig, JobParamRawDtl}
-import com.gability.scala.common.utils.EtlUtils
 import com.gability.scala.common.utils.EtlUtils._
+import com.gability.scala.Metadata.ercsnStructSchema
 import org.apache.logging.log4j.scala.Logging
-import org.apache.spark.sql.{DataFrame, SparkSession}
-
-import scala.util.Try
+import org.apache.spark.sql.SparkSession
 
 /** ETLPipelineLogic case class handle the ETL pipeline logic.
   *
@@ -18,11 +15,22 @@ case class ETLPipelineLogic(jobConfig: JobConfig) extends Logging {
   val spark: SparkSession = jobConfig.sparkSession
   import spark.implicits._
   def jobLogicRunner(): Unit = {
+    logger.info("Start Reading json from param file")
     val jsonStr: String = jobConfig.configDS.map(_.jobParams("json")).head()
+
+    logger.info("parsing json string as JobParamRawDtl")
     val param: JobParamRawDtl = getInputFileParam[JobParamRawDtl](jsonStr)
-    val (validDs, inValidDs) = HadoopFileHandler.readDelimitedFile(param, schemaStruct = null, spark) //ercsnSchemaStruct
-    /*logger.info("Start Reading and Parsing input data sources")
-    val dataContext = getInputDataContext(spark)*/
+
+    logger.info("read delimited file and compare with struct type")
+    val (validDs, inValidDs) = HadoopFileHandler.readDelimitedFile(param, ercsnStructSchema, spark)
+
+    logger.info("adding batchId, file name, and source system")
+
+    logger.info("write rejected records")
+    HadoopFileHandler.writeDelimitedFile(param.rejectedRecordsPath, inValidDs)
+
+    logger.info("Apply ETL rules")
+    //val dataContext =
 
     /*logger.info("Start transformation for input data sources")
     val transformedData: DataFrame = getInputDataTransformed(spark, dataContext)*/

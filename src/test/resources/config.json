@@ -5,7 +5,7 @@
   "totalInputFileColumns": "5",
   "inputSourcePath": "/home/moustafa/Scala/spark-template-job/data/raw_zone/3G_ERCSN/",
   "rejectedRecordsPath": "/data/processed/3G_ERCSN/",
-  "rejectOutputType": "csv",
+  "rejectOutputType": "json",
   "targetTables": ["Singl_KPI"],
   "saveMode": "Append",
   "processingSuffix": "*_processing",
