@@ -5,7 +5,7 @@ import com.gability.scala.common.metadata.Metadata.{JobConfig, JobParamRawDtl}
 import com.gability.scala.common.utils.EtlUtils._
 import com.gability.scala.Metadata.ercsnStructSchema
 import org.apache.logging.log4j.scala.Logging
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.lit
 
 /** ETLPipelineLogic case class handle the ETL pipeline logic.

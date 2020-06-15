@@ -26,7 +26,7 @@ class HadoopFileHandlerTest extends FunSuite with Matchers with BeforeAndAfter w
       Row("42456", "STRING1", null, null, null, fileName),
       Row("SSSSS", null, null, null, null, fileName)
     )
-
+    actualValidDt.show()
     val expectedValid: Dataset[Row] = Seq(
       (12456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
       (22456, "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),

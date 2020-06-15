@@ -51,7 +51,6 @@ object EtlUtils {
     DoubleType -> validateDouble,
     BooleanType -> validateBoolean,
     DateType -> validateDate
-    /*DecimalType -> validateDecimal,*/
   )
 
   def validateInt(a: String): Boolean = Try(a.toInt).isSuccess

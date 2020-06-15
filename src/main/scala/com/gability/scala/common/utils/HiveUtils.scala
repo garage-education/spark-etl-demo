@@ -8,31 +8,23 @@ import scala.io.Source
 class HiveUtils(ss: SparkSession) {
 
   //TODO: write header documentation
-  def parseCSVInputFile(filePath: String,
-                        fileDelimiter: String = "|",
-                        hasHeader: Boolean = true,
-                        fileFormat:String="csv"): Dataset[Row] = {
+  def parseCSVInputFile(filePath: String, fileDelimiter: String = "|", hasHeader: Boolean = true, fileFormat: String = "csv"): Dataset[Row] = {
     ss.read
       .format(fileFormat)
       .option("sep", fileDelimiter) //TODO: delimiter
       .option("header", hasHeader)
       .load(filePath)
   }
+
   //TODO: write header documentation
-  def createTmpHiveTable(filePath: String,
-                         tableName: String,
-                         fileDelimiter: String = "|",
-                         hasHeader: Boolean = true,
-                         fileFormat:String="csv"): Unit = {
-    parseCSVInputFile(filePath, fileDelimiter, hasHeader,fileFormat)
+  def createTmpHiveTable(filePath: String, tableName: String, fileDelimiter: String = "|", hasHeader: Boolean = true, fileFormat: String = "csv"): Unit = {
+    parseCSVInputFile(filePath, fileDelimiter, hasHeader, fileFormat)
       .createOrReplaceTempView(tableName)
   }
+
 //TODO: write header documentation
-  def createTmpHiveTableWithDefaultName(fileName: String,
-                                        fileDelimiter: String = "|",
-                                        hasHeader: Boolean = true,
-                                        fileFormat:String=".csv"): Unit = {
-    parseCSVInputFile(getResourceTestPath(fileName+fileFormat), fileDelimiter, hasHeader)
+  def createTmpHiveTableWithDefaultName(fileName: String, fileDelimiter: String = "|", hasHeader: Boolean = true, fileFormat: String = ".csv"): Unit = {
+    parseCSVInputFile(getResourceTestPath(fileName + fileFormat), fileDelimiter, hasHeader)
       .createOrReplaceTempView(fileName.split("/").last)
   }
 
