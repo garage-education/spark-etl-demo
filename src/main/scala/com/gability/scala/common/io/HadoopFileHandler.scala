@@ -14,6 +14,7 @@ object HadoopFileHandler {
       .option("header", param.header)
       .csv(param.inputSourcePath + param.processingSuffix)
       .withColumn("file_name", getFileNameFromPathUDF(input_file_name()))
+
     //TODO: check to reduce the dataframe scan one idea is to add a new column with match Boolean flag
     val validDf = inputDt
       .filter(schemaParser(_, schemaValidator(schemaStruct)))

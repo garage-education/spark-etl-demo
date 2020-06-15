@@ -3,7 +3,7 @@
   "inputFilesType":"csv",
   "dataFileDelimiter": "|",
   "totalInputFileColumns": "5",
-  "inputSourcePath": "/home/moustafa/Scala/spark-template-job/data/raw_zone/3G_ERCSN/",
+  "inputSourcePath": "/home/moustafa/Scala/spark-etl-demo/data/raw_zone/3G_ERCSN/",
   "rejectedRecordsPath": "/data/processed/3G_ERCSN/",
   "rejectOutputType": "json",
   "targetTables": ["Singl_KPI"],
