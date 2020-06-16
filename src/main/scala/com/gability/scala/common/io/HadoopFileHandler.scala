@@ -2,6 +2,7 @@ package com.gability.scala.common.io
 
 import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
 import com.gability.scala.common.utils.EtlUtils._
+import com.gability.scala.Metadata.InputRow
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
 import org.apache.spark.sql.functions.{input_file_name, lit}
 import org.apache.spark.sql.types.StructType
@@ -17,7 +18,8 @@ object HadoopFileHandler {
 
     //TODO: check to reduce the dataframe scan one idea is to add a new column with match Boolean flag
     val validDf = inputDt
-      .filter(schemaParser(_, schemaValidator(schemaStruct)))
+      .filter(schemaParser(_, schema2CaseClassValidator[InputRow]()))
+    //.filter(schemaParser(_, schemaValidator(schemaStruct)))
 
     //TODO: add handle to allow null fields rejection.
     //TODO: add rejection reason

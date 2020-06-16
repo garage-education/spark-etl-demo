@@ -5,13 +5,13 @@ import java.sql.Date
 
 import com.gability.scala.common.utils.JsonExtractor._
 import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
-import org.apache.spark.sql.{Row, SaveMode}
+import org.apache.spark.sql.{Encoders, Row, SaveMode}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.types._
 
 import scala.util.Try
-
+import scala.reflect.runtime.{universe => ru}
 object EtlUtils {
 
   /** getJsonObj parse json multi-line or one line string.
@@ -88,23 +88,11 @@ object EtlUtils {
 
   val getFileNameFromPathUDF: UserDefinedFunction = udf[String, String](_.split("/").last.split('.').head)
 
-  ////.filter(schemaParser(_, fieldSchemaValidator))
-  val fieldSchemaValidator: Seq[String => Boolean] = Seq(
-    validateInt,
-    validateString,
-    validateString,
-    validateString,
-    validateTimestamp
-  )
   //.filter(schemaParser(_, schema2CaseClassValidator(classOf[InputRow])))
-  def schema2CaseClassValidator[T](c: Class[T]): Seq[String => Boolean] = {
-    c.getFields map (_.getType) map validators //TODO: getFeilds doesn't return anything it needs to be fixed //Scala get fields in case class
+  def schema2CaseClassValidator[T <: Product: ru.TypeTag](): Seq[String => Boolean] = {
+    val personEncoder = Encoders.product[T]
+    val personSchema: StructType = personEncoder.schema
+    personSchema.map(x => x.dataType).map(validator)
   }
-
-  val validators: Map[Class[_], String => Boolean] = Map(
-    classOf[Int] -> validateInt,
-    classOf[String] -> validateString,
-    classOf[Timestamp] -> validateTimestamp
-  )
 
 }
