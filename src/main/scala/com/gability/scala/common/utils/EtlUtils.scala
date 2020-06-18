@@ -11,7 +11,7 @@ import org.apache.spark.sql.{Dataset, Encoders, Row, SaveMode}
 
 import scala.reflect.runtime.{universe => ru}
 import scala.util.Try
-
+import TypeValidator._
 object EtlUtils {
 
   /** getJsonObj parse json multi-line or one line string.
@@ -54,47 +54,30 @@ object EtlUtils {
   def structSchemaValidator(struct: StructType): Seq[String => Boolean] =
     struct map { x =>
       if (x.nullable) {
-        nullableValidator(validator(x.dataType))
+        nullableValidator(validatorMap(x.dataType))
       } else
-        validator(x.dataType)
+        validatorMap(x.dataType)
     }
+
+  val validatorMap: Map[DataType, String => Boolean] = Map(
+    StringType -> parse[String],
+    IntegerType -> parse[Int],
+    TimestampType -> parse[Timestamp],
+    ShortType -> parse[Short],
+    LongType -> parse[Long],
+    FloatType -> parse[Float],
+    DoubleType -> parse[Double],
+    BooleanType -> parse[Boolean],
+    DateType -> parse[Date]
+  )
+
+  def nullableValidator(validator: String => Boolean): String => Boolean = a => a == null || validator(a)
 
   def schema2CaseClassValidator[T <: Product: ru.TypeTag](): Seq[String => Boolean] = {
     val personEncoder = Encoders.product[T]
     val personSchema: StructType = personEncoder.schema
     structSchemaValidator(personSchema)
   }
-
-  val validator: Map[DataType, String => Boolean] = Map(
-    StringType -> validateString,
-    IntegerType -> validateInt,
-    TimestampType -> validateTimestamp,
-    ShortType -> validateShort,
-    LongType -> validateLong,
-    FloatType -> validateFloat,
-    DoubleType -> validateDouble,
-    BooleanType -> validateBoolean,
-    DateType -> validateDate
-  )
-
-  def nullableValidator(validator: String => Boolean): String => Boolean = a => a == null || validator(a)
-
-  def validateInt(a: String): Boolean = Try(a.toInt).isSuccess
-  def validateTimestamp(a: String): Boolean = Try(Timestamp.valueOf(a)).isSuccess
-  def validateString(a: String): Boolean = true
-  def validateByte(a: String): Boolean = Try(a.toByte).isSuccess
-  def validateShort(a: String): Boolean = Try(a.toShort).isSuccess
-  def validateLong(a: String): Boolean = Try(a.toLong).isSuccess
-  def validateFloat(a: String): Boolean = Try(a.toFloat).isSuccess
-  def validateDouble(a: String): Boolean = Try(a.toDouble).isSuccess
-  def validateBoolean(a: String): Boolean = Try(a.toBoolean).isSuccess
-  def validateDate(a: String): Boolean = Try(Date.valueOf(a)).isSuccess
-
-  def validateDecimal(a: String) = ??? //Try(BigDecimal(a)).isSuccess
-  def validateStruct(a: String) = ???
-  def validateMap(a: String) = ??? //Try(a.toMap).isSuccess
-  def validateArray(a: String) = ??? //Try(a.toArray).isSuccess
-  def validateBinary(a: String) = ??? //Try(a.toArray[Byte]).isSuccess
 
   /**
     * get an instance of org.apche.spark.sql.SaveMode.{Append or Overwrite} matching string
