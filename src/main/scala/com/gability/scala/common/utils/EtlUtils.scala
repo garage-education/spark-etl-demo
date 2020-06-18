@@ -37,8 +37,23 @@ object EtlUtils {
     }
   }
 
-  def schemaValidator(struct: StructType): Seq[String => Boolean] = {
-    struct.map(x => x.dataType).map(validator)
+  def structSchemaValidator(struct: StructType): Seq[String => Boolean] =
+    struct map { x =>
+      if (x.nullable) {
+        nullableValidator(validator(x.dataType))
+      } else
+        validator(x.dataType)
+    }
+
+  def schema2CaseClassValidator[T <: Product: ru.TypeTag](): Seq[String => Boolean] = {
+    val personEncoder = Encoders.product[T]
+    val personSchema: StructType = personEncoder.schema
+    personSchema.map { x =>
+      if (x.nullable) {
+        nullableValidator(validator(x.dataType))
+      } else
+        validator(x.dataType)
+    }
   }
 
   val validator: Map[DataType, String => Boolean] = Map(
@@ -52,6 +67,8 @@ object EtlUtils {
     BooleanType -> validateBoolean,
     DateType -> validateDate
   )
+
+  def nullableValidator(validator: String => Boolean): String => Boolean = a => a == null || validator(a)
 
   def validateInt(a: String): Boolean = Try(a.toInt).isSuccess
   def validateTimestamp(a: String): Boolean = Try(Timestamp.valueOf(a)).isSuccess
@@ -87,12 +104,5 @@ object EtlUtils {
   }
 
   val getFileNameFromPathUDF: UserDefinedFunction = udf[String, String](_.split("/").last.split('.').head)
-
-  //.filter(schemaParser(_, schema2CaseClassValidator(classOf[InputRow])))
-  def schema2CaseClassValidator[T <: Product: ru.TypeTag](): Seq[String => Boolean] = {
-    val personEncoder = Encoders.product[T]
-    val personSchema: StructType = personEncoder.schema
-    personSchema.map(x => x.dataType).map(validator)
-  }
 
 }

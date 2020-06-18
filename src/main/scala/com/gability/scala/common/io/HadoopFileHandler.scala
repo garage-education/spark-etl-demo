@@ -6,6 +6,7 @@ import com.gability.scala.Metadata.InputRow
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
 import org.apache.spark.sql.functions.{input_file_name, lit}
 import org.apache.spark.sql.types.StructType
+import org.apache.spark.storage.StorageLevel
 
 object HadoopFileHandler {
 
@@ -16,15 +17,17 @@ object HadoopFileHandler {
       .csv(param.inputSourcePath + param.processingSuffix)
       .withColumn("file_name", getFileNameFromPathUDF(input_file_name()))
 
+    inputDt.persist(StorageLevel.MEMORY_AND_DISK_SER_2)
+
     //TODO: check to reduce the dataframe scan one idea is to add a new column with match Boolean flag
     val validDf = inputDt
-      .filter(schemaParser(_, schema2CaseClassValidator[InputRow]()))
-    //.filter(schemaParser(_, schemaValidator(schemaStruct)))
+    //.filter(schemaParser(_, schema2CaseClassValidator[InputRow]()))
+      .filter(schemaParser(_, structSchemaValidator(schemaStruct)))
 
     //TODO: add handle to allow null fields rejection.
     //TODO: add rejection reason
     val inValidDf = inputDt
-      .filter(!schemaParser(_, schemaValidator(schemaStruct)))
+      .filter(!schemaParser(_, structSchemaValidator(schemaStruct)))
 
     (validDf, inValidDf)
   }

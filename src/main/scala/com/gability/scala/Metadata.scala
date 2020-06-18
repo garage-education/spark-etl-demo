@@ -8,15 +8,15 @@ object Metadata {
 
   val ercsnStructSchema: StructType =
     StructType(
-      StructField("a", IntegerType, true) ::
-        StructField("b", StringType, false) ::
-        StructField("c", StringType, false) ::
-        StructField("d", StringType, false) ::
-        StructField("e", TimestampType, false) ::
-        StructField("f", StringType, false) :: Nil
+      StructField("a", IntegerType, false) ::
+        StructField("b", StringType, true) ::
+        StructField("c", StringType, true) ::
+        StructField("d", StringType, true) ::
+        StructField("e", TimestampType, true) ::
+        StructField("f", StringType, true) :: Nil
     )
 
   case class ErcsvInputData(custId: String, custName: String, custCity: String)
 
-  final case class InputRow(a: Int, b: String, c: String, d: String, e: Timestamp, f: String)
+  final case class InputRow(a: Option[Int], b: String, c: String, d: String, e: Timestamp, f: String)
 }
