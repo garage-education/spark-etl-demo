@@ -10,26 +10,13 @@ import org.apache.spark.storage.StorageLevel
 
 object HadoopFileHandler {
 
-  def readDelimitedFile(param: JobParamRawDtl, schemaStruct: StructType, spark: SparkSession): (Dataset[Row], Dataset[Row]) = {
-    val inputDt = spark.read
+  def readDelimitedFile(param: JobParamRawDtl, spark: SparkSession): Dataset[Row] = {
+    spark.read
       .option("delimiter", param.dataFileDelimiter)
       .option("header", param.header)
       .csv(param.inputSourcePath + param.processingSuffix)
       .withColumn("file_name", getFileNameFromPathUDF(input_file_name()))
 
-    inputDt.persist(StorageLevel.MEMORY_AND_DISK_SER_2)
-
-    //TODO: check to reduce the dataframe scan one idea is to add a new column with match Boolean flag
-    val validDf = inputDt
-    //.filter(schemaParser(_, schema2CaseClassValidator[InputRow]()))
-      .filter(schemaParser(_, structSchemaValidator(schemaStruct)))
-
-    //TODO: add handle to allow null fields rejection.
-    //TODO: add rejection reason
-    val inValidDf = inputDt
-      .filter(!schemaParser(_, structSchemaValidator(schemaStruct)))
-
-    (validDf, inValidDf)
   }
 
   def writeDelimitedFile(rejectionPath: String, rejectedDs: Dataset[Row]): Unit = {

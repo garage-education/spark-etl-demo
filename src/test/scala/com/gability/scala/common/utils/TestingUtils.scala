@@ -1,7 +1,6 @@
-package com.gability.scala.common.testing.utils
+package com.gability.scala.common.utils
 
-import com.gability.scala.common.utils.HiveUtils
-import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 class TestingUtils(spark: SparkSession) {
   var hiveUtils = new HiveUtils(spark)

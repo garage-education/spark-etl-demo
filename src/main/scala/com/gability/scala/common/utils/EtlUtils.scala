@@ -5,13 +5,16 @@ import java.sql.Date
 
 import com.gability.scala.common.utils.JsonExtractor._
 import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
-import org.apache.spark.sql.{Encoders, Row, SaveMode}
+import org.apache.spark.sql.{Dataset, Encoder, Encoders, Row, SaveMode, SparkSession}
 import org.apache.spark.sql.expressions.UserDefinedFunction
-import org.apache.spark.sql.functions.udf
+import org.apache.spark.sql.functions.{input_file_name, udf}
 import org.apache.spark.sql.types._
+import org.apache.spark.storage.StorageLevel
+import org.apache.spark.sql.{Encoder, Encoders}
 
 import scala.util.Try
 import scala.reflect.runtime.{universe => ru}
+
 object EtlUtils {
 
   /** getJsonObj parse json multi-line or one line string.
@@ -24,6 +27,20 @@ object EtlUtils {
     */
   def getInputFileParam[T <: JobParamRawDtl](jsonString: String)(implicit m: Manifest[T]): T = {
     getJsonObj[T](jsonString)
+  }
+
+  val getFileNameFromPathUDF: UserDefinedFunction = udf[String, String](_.split("/").last.split('.').head)
+
+  def validateDataset(inputDs: Dataset[Row], schemaStruct: StructType): (Dataset[Row], Dataset[Row]) = {
+    //TODO: check to reduce the dataframe scan one idea is to add a new column with match Boolean flag
+    val validDf = inputDs
+      .filter(schemaParser(_, structSchemaValidator(schemaStruct)))
+
+    //TODO: add rejection reason
+    val inValidDf = inputDs
+      .filter(!schemaParser(_, structSchemaValidator(schemaStruct)))
+
+    (validDf, inValidDf)
   }
 
   def schemaParser(a: Row, fields: Seq[String => Boolean]): Boolean = {
@@ -97,7 +114,5 @@ object EtlUtils {
       case _ => throw new Exception("Unsupported SaveMode= " + saveModeStr)
     }
   }
-
-  val getFileNameFromPathUDF: UserDefinedFunction = udf[String, String](_.split("/").last.split('.').head)
 
 }

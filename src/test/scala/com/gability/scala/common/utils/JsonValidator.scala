@@ -1,7 +1,6 @@
-package com.gability.scala
+package com.gability.scala.common.utils
 
 import com.gability.scala.common.metadata.Metadata.{JobParamRawDtl, SchemaDtl}
-import com.gability.scala.common.io.FilesHandler._
 import com.gability.scala.common.utils.JsonExtractor._
 import org.scalatest._
 

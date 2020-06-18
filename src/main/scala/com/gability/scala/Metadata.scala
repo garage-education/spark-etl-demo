@@ -16,7 +16,5 @@ object Metadata {
         StructField("f", StringType, true) :: Nil
     )
 
-  case class ErcsvInputData(custId: String, custName: String, custCity: String)
-
-  final case class InputRow(a: Option[Int], b: String, c: String, d: String, e: Timestamp, f: String)
+  case class InputRow(a: Int, b: Option[String], c: Option[String], d: Option[String], e: Option[Timestamp], f: String)
 }

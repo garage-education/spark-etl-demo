@@ -2,8 +2,7 @@ package com.gability.scala
 
 import com.gability.scala.common.config.ETLConfigManagement.getJobConfig
 import com.gability.scala.common.metadata.Metadata.JobConfig
-import com.gability.scala.common.testing.utils.TestingUtils
-import com.gability.scala.common.utils.HiveUtils
+import com.gability.scala.common.utils.{HiveUtils, TestingUtils}
 import com.holdenkarau.spark.testing.{DatasetSuiteBase, SparkSessionProvider}
 import org.apache.spark.sql.{Dataset, Row}
 import org.scalatest._

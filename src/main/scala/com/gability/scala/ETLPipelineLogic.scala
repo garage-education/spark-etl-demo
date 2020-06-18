@@ -4,9 +4,11 @@ import com.gability.scala.common.io.HadoopFileHandler
 import com.gability.scala.common.metadata.Metadata.{JobConfig, JobParamRawDtl}
 import com.gability.scala.common.utils.EtlUtils._
 import com.gability.scala.Metadata.ercsnStructSchema
+import com.gability.scala.common.utils.EtlUtils
 import org.apache.logging.log4j.scala.Logging
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.lit
+import org.apache.spark.storage.StorageLevel
 
 /** ETLPipelineLogic case class handle the ETL pipeline logic.
   *
@@ -24,7 +26,10 @@ case class ETLPipelineLogic(jobConfig: JobConfig) extends Logging {
     val param: JobParamRawDtl = getInputFileParam[JobParamRawDtl](jsonStr)
 
     logger.info("read delimited file and compare with struct type")
-    val (validDs, inValidDs) = HadoopFileHandler.readDelimitedFile(param, ercsnStructSchema, spark)
+    val inputDs = HadoopFileHandler.readDelimitedFile(param, spark)
+    inputDs.persist(StorageLevel.MEMORY_AND_DISK_SER_2)
+
+    val (validDs, inValidDs) = EtlUtils.validateDataset(inputDs, ercsnStructSchema)
 
     logger.info("adding batchId to invalid source system")
     val invalidDsWithBatch = inValidDs.withColumn("batch_id", lit(batchId))
