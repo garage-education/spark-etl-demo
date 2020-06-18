@@ -2,7 +2,7 @@ package com.gability.scala
 
 import java.sql.Timestamp
 
-import org.apache.spark.sql.types.{IntegerType, LongType, StringType, StructField, StructType, TimestampType}
+import org.apache.spark.sql.types._
 
 object Metadata {
 

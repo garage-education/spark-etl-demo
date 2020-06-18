@@ -1,8 +1,6 @@
 package com.gability.scala.common.utils
 import com.gability.scala.common.io.FilesHandler._
-import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
-
-import scala.io.Source
+import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
 //TODO: Create unit testing
 class HiveUtils(ss: SparkSession) {

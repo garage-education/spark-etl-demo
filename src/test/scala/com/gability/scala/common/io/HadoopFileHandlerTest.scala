@@ -2,12 +2,11 @@ package com.gability.scala.common.io
 
 import com.gability.scala.common.io.HadoopFileHandler._
 import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
+import com.gability.scala.common.utils.Constants._
 import com.gability.scala.common.utils.JsonExtractor.getJsonParsed
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
-import com.gability.scala.common.utils.Constants._
 
 class HadoopFileHandlerTest extends FunSuite with Matchers with BeforeAndAfter with DatasetSuiteBase {
 

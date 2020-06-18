@@ -6,17 +6,18 @@ import org.scalatest._
 
 class JsonValidator extends FunSuite with Matchers {
   test("test json extractor ") {
+
     val expectedJsonParsed: JobParamRawDtl = JobParamRawDtl(
       "3G_ERCSN",
       "csv",
       "|",
       "5",
-      "/data/raw_zone/3G_ERCSN/",
+      "/home/moustafa/Scala/spark-etl-demo/data/raw_zone/3G_ERCSN/",
       "/data/processed/3G_ERCSN/",
       "csv",
       List("Singl_KPI"),
       "Append",
-      "_processing",
+      "*_processing",
       "orc",
       "false",
       "event_date,batch_id",

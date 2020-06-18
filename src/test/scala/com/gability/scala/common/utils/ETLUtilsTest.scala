@@ -1,15 +1,11 @@
 package com.gability.scala.common.utils
 
-import java.sql.Timestamp
-
-import com.holdenkarau.spark.testing.DatasetSuiteBase
-import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
-import EtlUtils._
+import com.gability.scala.common.utils.EtlUtils._
 import com.gability.scala.Metadata._
+import com.gability.scala.common.utils.Constants._
+import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.apache.spark.sql.{DataFrame, Dataset, Row}
-import Constants._
-import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
-import com.gability.scala.common.utils.JsonExtractor.getJsonParsed
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 class ETLUtilsTest extends FunSuite with Matchers with BeforeAndAfter with DatasetSuiteBase {
 
   val inputSampleData: Seq[(String, String, String, String, String, String)] = Seq(

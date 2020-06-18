@@ -1,6 +1,6 @@
 package com.gability.scala.common.io
 
-import java.io.{File, FileInputStream, FileNotFoundException, FileOutputStream, InputStream, IOException}
+import java.io.{File, FileInputStream, FileOutputStream, InputStream}
 import java.nio.file.{Files, Paths}
 import java.util.zip.ZipInputStream
 

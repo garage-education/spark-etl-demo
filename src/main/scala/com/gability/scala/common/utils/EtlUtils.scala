@@ -1,19 +1,16 @@
 package com.gability.scala.common.utils
 
-import java.sql.Timestamp
-import java.sql.Date
+import java.sql.{Date, Timestamp}
 
-import com.gability.scala.common.utils.JsonExtractor._
 import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
-import org.apache.spark.sql.{Dataset, Encoder, Encoders, Row, SaveMode, SparkSession}
+import com.gability.scala.common.utils.JsonExtractor._
 import org.apache.spark.sql.expressions.UserDefinedFunction
-import org.apache.spark.sql.functions.{input_file_name, udf}
+import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.types._
-import org.apache.spark.storage.StorageLevel
-import org.apache.spark.sql.{Encoder, Encoders}
+import org.apache.spark.sql.{Dataset, Encoders, Row, SaveMode}
 
-import scala.util.Try
 import scala.reflect.runtime.{universe => ru}
+import scala.util.Try
 
 object EtlUtils {
 

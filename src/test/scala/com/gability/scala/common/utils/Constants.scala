@@ -1,7 +1,6 @@
 package com.gability.scala.common.utils
 
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
-import org.apache.spark.sql.{Dataset, Row}
 
 object Constants {
   val etlInputTestFileName = "ercsn_3g_20200512182929_part01"
