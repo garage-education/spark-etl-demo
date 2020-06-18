@@ -28,7 +28,8 @@ class HadoopFileHandlerTest extends FunSuite with Matchers with BeforeAndAfter w
       Row("12456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
       Row("22456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
       Row("32456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
-      Row("42456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName)
+      Row("42456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", fileName),
+      Row("8765", null, null, null, null, fileName)
     )
 
     val expectedValid = spark.createDataFrame(

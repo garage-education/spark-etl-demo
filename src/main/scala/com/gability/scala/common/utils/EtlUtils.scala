@@ -48,12 +48,7 @@ object EtlUtils {
   def schema2CaseClassValidator[T <: Product: ru.TypeTag](): Seq[String => Boolean] = {
     val personEncoder = Encoders.product[T]
     val personSchema: StructType = personEncoder.schema
-    personSchema.map { x =>
-      if (x.nullable) {
-        nullableValidator(validator(x.dataType))
-      } else
-        validator(x.dataType)
-    }
+    structSchemaValidator(personSchema)
   }
 
   val validator: Map[DataType, String => Boolean] = Map(
