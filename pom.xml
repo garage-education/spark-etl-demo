@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.gability.scala</groupId>
         <artifactId>scala-starter-parent</artifactId>
-        <version>1.34</version>
+        <version>1.36</version>
     </parent>
 
     <artifactId>spark-template-job</artifactId>
@@ -33,5 +33,12 @@
         <tag>HEAD</tag>
     </scm>
 
-
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.github.pureconfig/pureconfig -->
+        <dependency>
+            <groupId>com.github.pureconfig</groupId>
+            <artifactId>pureconfig_2.11</artifactId>
+            <version>0.12.3</version>
+        </dependency>
+    </dependencies>
 </project>

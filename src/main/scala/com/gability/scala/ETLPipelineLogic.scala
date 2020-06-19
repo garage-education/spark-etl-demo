@@ -5,8 +5,9 @@ import com.gability.scala.common.metadata.Metadata.{JobConfig, JobParamRawDtl}
 import com.gability.scala.common.utils.EtlUtils._
 import com.gability.scala.Metadata.ercsnStructSchema
 import com.gability.scala.common.utils.EtlUtils
+import com.gability.scala.EnvironmentConfig.Conf
 import org.apache.logging.log4j.scala.Logging
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{Dataset, SaveMode, SparkSession}
 import org.apache.spark.sql.functions.lit
 import org.apache.spark.storage.StorageLevel
 
@@ -14,12 +15,13 @@ import org.apache.spark.storage.StorageLevel
   *
   * @param jobConfig: JobConfig object for spark functionality.
   */
-case class ETLPipelineLogic(jobConfig: JobConfig) extends Logging {
+case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
+
   val spark: SparkSession = jobConfig.sparkSession
   import spark.implicits._
   def jobLogicRunner(): Unit = {
     logger.info("Start Reading json from param file")
-    val batchId: Long = jobConfig.configDS.map(_.batchId).head()
+    val batchId: Long   = jobConfig.configDS.map(_.batchId).head()
     val jsonStr: String = jobConfig.configDS.map(_.jobParams("json")).head()
 
     logger.info("parsing json string as JobParamRawDtl")
@@ -35,35 +37,21 @@ case class ETLPipelineLogic(jobConfig: JobConfig) extends Logging {
     val invalidDsWithBatch = inValidDs.withColumn("batch_id", lit(batchId))
 
     logger.info("write rejected records")
-    HadoopFileHandler.writeDelimitedFile(param.rejectedRecordsPath, invalidDsWithBatch)
+    HadoopFileHandler.writeDelimitedFile(param.rejectedRecordsPath, invalidDsWithBatch, param.dataFileDelimiter)
 
-    logger.info("Apply ETL rules")
+    logger.info("get hive input data context")
+    val inputDataContext = HiveInputTableDataContext(spark, props).getHiveInputDataContext
 
-//    /val dataContext =
+    logger.info("Start transformation for input data sources")
+    val transformedData: Dataset[Metadata.ErcsvInputData] =
+      LogicUtils.transformErcsnInputData(validDs, inputDataContext.imsiMaster, batchId)
 
-    /*logger.info("Start transformation for input data sources")
-    val transformedData: DataFrame = getInputDataTransformed(spark, dataContext)*/
-
-    /*logger.info("Write tranformed data to output path with repartition by option")
-    saveOutputToPath(transformedData, srcPaths(4), "fileName")
-    logger.info("Writing done.. ")*/
+    logger.info("Write tranformed data to output path with repartition by option")
+    transformedData.write
+      .mode(SaveMode.Append)
+      .partitionBy(param.partitionColumns)
+      .saveAsTable(param.targetTables.head)
+    logger.info("Writing done.. ")
   }
-
-  /*  private def getInputDataContext(sparkSession: SparkSession, srcPaths:Array[String]): DataContext = {
-    InputDataCollector(sparkSession).getInputDataSourcesContext(srcPaths)
-  }
-
-  private def getInputDataTransformed(sparkSession: SparkSession, dataContext: DataContext): DataFrame = {
-    DataTransformer(sparkSession, dataContext).prepareData()
-  }
-
-  private def saveOutputToPath(df: DataFrame, outPath: String, partitionCol: String): Unit = {
-    df.write
-      .option("mapreduce.fileoutputcommitter.marksuccessfuljobs", "false") //ignore _Success dummy files in hadoop/spark output
-      .mode("overwrite")
-      .format("json")
-      .partitionBy(partitionCol)
-      .save(outPath)
-  }*/
 
 }

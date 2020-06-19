@@ -15,9 +15,10 @@ object HadoopFileHandler {
       .withColumn("fileName", getFileNameFromPathUDF(input_file_name()))
   }
 
-  def writeDelimitedFile(rejectionPath: String, rejectedDs: Dataset[Row]): Unit = {
+  def writeDelimitedFile(rejectionPath: String, rejectedDs: Dataset[Row], dataFileDelimiter: String): Unit = {
     rejectedDs.write
-      .json(rejectionPath)
+      .option("delimiter", dataFileDelimiter)
+      .csv(rejectionPath)
   }
 
 }

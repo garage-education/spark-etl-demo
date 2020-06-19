@@ -31,4 +31,6 @@ object Metadata {
                             eventTs:      Timestamp,
                             batchId:      Long,
                             fileName:     String)
+
+  case class HiveInputDataContext(configParam: Dataset[Row], imsiMaster: Dataset[Row])
 }

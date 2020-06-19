@@ -9,6 +9,7 @@ object LogicUtils extends Logging {
   def transformErcsnInputData(inputDs: Dataset[Row], imsiMaster: Dataset[Row], batchId: Long): Dataset[ErcsvInputData] = {
     import inputDs.sparkSession.implicits._
 
+    logger.info("transform input data frame")
     val inputDsJoinedImsi = inputDs
       .join(broadcast(imsiMaster), Seq("imsi"), "left_outer")
       .select(
@@ -26,7 +27,7 @@ object LogicUtils extends Logging {
       )
       .as[ErcsvInputData]
 
-    inputDsJoinedImsi.show(truncate = false)
+    logger.debug("%s".format(inputDsJoinedImsi.show))
     inputDsJoinedImsi
   }
 }

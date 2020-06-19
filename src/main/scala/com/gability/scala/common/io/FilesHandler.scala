@@ -1,10 +1,11 @@
 package com.gability.scala.common.io
 
-import java.io.{File, FileInputStream, FileOutputStream, InputStream}
+import java.io.{File,        FileInputStream, FileOutputStream, InputStream}
 import java.nio.file.{Files, Paths}
 import java.util.zip.ZipInputStream
 
 import scala.io.Source
+import scala.io.Source.fromFile
 import scala.util.Try
 
 object FilesHandler {
@@ -56,7 +57,7 @@ object FilesHandler {
   def readResourceFile(filePath: String): Try[String] =
     Try {
       val jsonFile = new File(getResourceTestPath(filePath))
-      Source.fromFile(jsonFile).getLines().mkString
+      fromFile(jsonFile).getLines().mkString
     }
 
   /** getListOfFiles given input and extension pattern filter
@@ -85,7 +86,7 @@ object FilesHandler {
     */
   def unzip(inputZipFilePath: String, destination: String): Unit = {
     //val outPutFolder: File = new File(inputZipFilePath)
-    val inputFileStream = new FileInputStream(inputZipFilePath)
+    val inputFileStream   = new FileInputStream(inputZipFilePath)
     val zippedInputStream = new ZipInputStream(inputFileStream)
 
     Stream
@@ -93,15 +94,15 @@ object FilesHandler {
       .takeWhile(_ != null)
       .foreach { file =>
         if (!file.isDirectory) {
-          val outPath = Paths.get(destination).resolve(file.getName)
+          val outPath       = Paths.get(destination).resolve(file.getName)
           val outPathParent = outPath.getParent
           if (!outPathParent.toFile.exists()) {
             outPathParent.toFile.mkdirs()
           }
 
           val outFile = outPath.toFile
-          val out = new FileOutputStream(outFile)
-          val buffer = new Array[Byte](4096)
+          val out     = new FileOutputStream(outFile)
+          val buffer  = new Array[Byte](4096)
           Stream
             .continually(zippedInputStream.read(buffer))
             .takeWhile(_ != -1)

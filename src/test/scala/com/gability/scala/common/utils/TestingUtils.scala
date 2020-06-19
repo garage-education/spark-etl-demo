@@ -1,5 +1,6 @@
 package com.gability.scala.common.utils
 
+import com.gability.scala.common.io.HiveUtils
 import org.apache.spark.sql.SparkSession
 
 class TestingUtils(spark: SparkSession) {
