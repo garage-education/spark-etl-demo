@@ -4,14 +4,13 @@ import java.sql.{Date, Timestamp}
 
 import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
 import com.gability.scala.common.utils.JsonExtractor._
+import com.gability.scala.common.utils.TypeValidator._
+import org.apache.spark.sql.{Dataset, Encoders, Row, SaveMode}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.types._
-import org.apache.spark.sql.{Dataset, Encoders, Row, SaveMode}
-
 import scala.reflect.runtime.{universe => ru}
-import scala.util.Try
-import TypeValidator._
+
 object EtlUtils {
 
   /** getJsonObj parse json multi-line or one line string.
@@ -64,15 +63,15 @@ object EtlUtils {
     }
 
   val validatorMap: Map[DataType, String => Boolean] = Map(
-    StringType -> parse[String],
-    IntegerType -> parse[Int],
+    StringType    -> parse[String],
+    IntegerType   -> parse[Int],
     TimestampType -> parse[Timestamp],
-    ShortType -> parse[Short],
-    LongType -> parse[Long],
-    FloatType -> parse[Float],
-    DoubleType -> parse[Double],
-    BooleanType -> parse[Boolean],
-    DateType -> parse[Date]
+    ShortType     -> parse[Short],
+    LongType      -> parse[Long],
+    FloatType     -> parse[Float],
+    DoubleType    -> parse[Double],
+    BooleanType   -> parse[Boolean],
+    DateType      -> parse[Date]
   )
 
   def nullableValidator(validator: String => Boolean): String => Boolean = a => a == null || validator(a)
@@ -92,10 +91,9 @@ object EtlUtils {
     */
   def getDataLoadStrategy(saveModeStr: String): SaveMode = {
     saveModeStr match {
-      case append if (append.equalsIgnoreCase("append")) => SaveMode.Append
-      case overwrite if (overwrite.equalsIgnoreCase("overwrite")) =>
-        SaveMode.Overwrite
-      case _ => throw new Exception("Unsupported SaveMode= " + saveModeStr)
+      case append if (append.equalsIgnoreCase("append"))          => SaveMode.Append
+      case overwrite if (overwrite.equalsIgnoreCase("overwrite")) => SaveMode.Overwrite
+      case _                                                      => throw new Exception("Unsupported SaveMode= " + saveModeStr)
     }
   }
 

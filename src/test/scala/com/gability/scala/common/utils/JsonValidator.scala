@@ -22,10 +22,10 @@ class JsonValidator extends FunSuite with Matchers {
       "false",
       "event_date,batch_id",
       List(
-        SchemaDtl("C0", "IntegerType", true),
-        SchemaDtl("C1", "StringType", true),
-        SchemaDtl("C2", "StringType", true),
-        SchemaDtl("C3", "StringType", true),
+        SchemaDtl("C0", "IntegerType",   true),
+        SchemaDtl("C1", "StringType",    true),
+        SchemaDtl("C2", "StringType",    true),
+        SchemaDtl("C3", "StringType",    true),
         SchemaDtl("C4", "TimestampType", true)
       )
     )

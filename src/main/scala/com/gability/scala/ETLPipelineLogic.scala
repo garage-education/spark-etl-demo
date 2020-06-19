@@ -38,6 +38,7 @@ case class ETLPipelineLogic(jobConfig: JobConfig) extends Logging {
     HadoopFileHandler.writeDelimitedFile(param.rejectedRecordsPath, invalidDsWithBatch)
 
     logger.info("Apply ETL rules")
+
 //    /val dataContext =
 
     /*logger.info("Start transformation for input data sources")

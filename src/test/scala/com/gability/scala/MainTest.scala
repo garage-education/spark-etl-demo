@@ -5,14 +5,11 @@ import com.gability.scala.common.metadata.Metadata.JobConfig
 import com.gability.scala.common.utils.TestingUtils
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.scalatest._
-
+import com.gability.scala.common.utils.Constants._
 class MainTest extends FunSuite with Matchers with DatasetSuiteBase with BeforeAndAfter {
-  var jobConfig: JobConfig = _
+  var jobConfig:    JobConfig = _
   var testingUtils: TestingUtils = _
   before {
-    val jobId = "12345678910"
-    val jobName = "etl-pipeline-test"
-    val batchId = "20200612152928"
     testingUtils = new TestingUtils(spark)
     testingUtils.prepareHiveInputTables()
 
