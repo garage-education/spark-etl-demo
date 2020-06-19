@@ -8,16 +8,18 @@ import org.apache.spark.sql.{DataFrame, Dataset, Row}
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 class ETLUtilsTest extends FunSuite with Matchers with BeforeAndAfter with DatasetSuiteBase {
 
-  val inputSampleData: Seq[(String, String, String, String, String, String)] = Seq(
-    ("12456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-    ("22456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-    ("32456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-    ("42456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-    ("SSSSSS", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-    ("8765", null, null, null, null, etlInputTestFileName),
-    ("SSSSS", null, null, null, null, etlInputTestFileName)
+  val inputSampleData: Seq[(String, String, String, String, String, String, String)] = Seq(
+    ("310120265624299", "490154203237518", "1234", "99", "1", "2020-06-15 07:45:43", etlInputTestFileName),
+    ("310120265624299", "490154203237518", "5432", "54", "2", "2020-06-15 12:12:43", etlInputTestFileName),
+    ("310120265624234", "490154203237543", "123", "22", "1", "2020-06-15 12:12:43", etlInputTestFileName),
+    ("310120265624123", "490154203231245", "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName),
+    ("310120265624123", null, "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName),
+    (null, "3214324134", "21421", "12421", "2", "2020-06-15 12:12:43", etlInputTestFileName),
+    ("214214", "12421412421124", null, "124", "1", "2020-06-15 12:12:43", etlInputTestFileName),
+    ("214214", "12421412421124", "11", null, "1", "2020-06-15 12:12:43", etlInputTestFileName),
+    ("214214", "12421412421124", "11", "444", "1", null, etlInputTestFileName)
   )
-  val colName = List("_c0", "_c1", "_c2", "_c3", "_c4", "file_name")
+  val colName = ercsnSchemaTypeRenamed.map(_.name)
 
   test("test read valid delimited file ") {
     import spark.implicits._
@@ -26,13 +28,13 @@ class ETLUtilsTest extends FunSuite with Matchers with BeforeAndAfter with Datas
     val (actualValidDt, _) = validateDataset(inputDs, ercsnStructSchema)
 
     val expectedValidSeq: Seq[Row] = Seq(
-      Row("12456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-      Row("22456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-      Row("32456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-      Row("42456", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-      Row("8765", null, null, null, null, etlInputTestFileName)
+      Row("310120265624299", "490154203237518", "1234", "99", "1", "2020-06-15 07:45:43", etlInputTestFileName),
+      Row("310120265624299", "490154203237518", "5432", "54", "2", "2020-06-15 12:12:43", etlInputTestFileName),
+      Row("310120265624234", "490154203237543", "123", "22", "1", "2020-06-15 12:12:43", etlInputTestFileName),
+      Row("310120265624123", "490154203231245", "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName),
+      Row("310120265624123", null, "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName)
     )
-    val expectedValid: DataFrame = spark.createDataFrame(spark.sparkContext.parallelize(expectedValidSeq), ercsnSampleInputSchemaType)
+    val expectedValid: DataFrame = spark.createDataFrame(spark.sparkContext.parallelize(expectedValidSeq), ercsnSchemaTypeRenamed)
 
     assertDatasetEquals(expectedValid, actualValidDt)
   }
@@ -45,8 +47,10 @@ class ETLUtilsTest extends FunSuite with Matchers with BeforeAndAfter with Datas
     val (_, actualInvalidDt: Dataset[Row]) = validateDataset(inputDs, ercsnStructSchema)
 
     val expectedInvalid: Seq[Row] = Seq(
-      Row("SSSSSS", "STRING1", "STRING2", "STRING3", "2020-04-03 20:15:14", etlInputTestFileName),
-      Row("SSSSS", null, null, null, null, etlInputTestFileName)
+      Row(null, "3214324134", "21421", "12421", "2", "2020-06-15 12:12:43", etlInputTestFileName),
+      Row("214214", "12421412421124", null, "124", "1", "2020-06-15 12:12:43", etlInputTestFileName),
+      Row("214214", "12421412421124", "11", null, "1", "2020-06-15 12:12:43", etlInputTestFileName),
+      Row("214214", "12421412421124", "11", "444", "1", null, etlInputTestFileName)
     )
 
     actualInvalidDt.collect.toSeq shouldEqual (expectedInvalid)

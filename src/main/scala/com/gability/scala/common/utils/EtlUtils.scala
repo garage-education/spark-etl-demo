@@ -29,12 +29,16 @@ object EtlUtils {
   val getFileNameFromPathUDF: UserDefinedFunction = udf[String, String](_.split("/").last.split('.').head)
 
   def validateDataset(inputDs: Dataset[Row], schemaStruct: StructType): (Dataset[Row], Dataset[Row]) = {
-    //TODO: check to reduce the dataframe scan one idea is to add a new column with match Boolean flag
-    val validDf = inputDs
+
+    val colNames = schemaStruct.map(_.name)
+    val inputDsRenamed = inputDs.toDF(colNames: _*)
+
+    //TODO: reduce the dataframe scan one idea is to add a new column with match Boolean flag
+    val validDf = inputDsRenamed
       .filter(schemaParser(_, structSchemaValidator(schemaStruct)))
 
     //TODO: add rejection reason
-    val inValidDf = inputDs
+    val inValidDf = inputDsRenamed
       .filter(!schemaParser(_, structSchemaValidator(schemaStruct)))
 
     (validDf, inValidDf)

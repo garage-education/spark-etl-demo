@@ -1,7 +1,0 @@
-IMSI|StartTime|EndTime|PTSHostname|AcctSessionId|SubscriberIPAddress|NetworkType|APN|Cell|IMEI|AccessDevice|ServiceName|ApplicationType|TransmittedBytes|ReceivedBytes
-1916638914|2020-06-12 12:44:51|2020-06-12 12:44:59|KRK-Offline-101.mltelecom|d9a45e5509a74b80|12.45.67.86|Mobile|MTelecom|1324|355355082097272|iPhone 7 Plus (A1784),Apple,GSM|appleimessage|RealTimeCommunication|1235|5422
-1916638915|2020-06-12 12:28:10|2020-06-12 12:44:56|KRK-Offline-102.mltelecom|d9a45e5509a74b81|12.45.67.87|Mobile|MTelecom|567345632|359255068086643|iPhone 6 (A1586),Apple,GSM|google|WebBrowsing|102279|718216
-1916638916|2020-06-12 12:44:49|2020-06-12 12:44:59|KRK-Offline-103.mltelecom|d9a45e5509a74b82|12.45.67.88|Mobile|MTelecom|42352435435|457174048658490|Bold 9780,BlackBerry,GSM|nopayload|Miscellaneous|4324|0
-1916638925|2020-06-12 12:44:57|2020-06-12 12:44:57|KRK-Offline-102.mltelecom|d9a45e5509a74b91|12.45.67.97|Mobile|MTelecom|5436546|114380062152222|iPhone 6 Plus (A1524),Apple,GSM|facetime|RealTimeCommunication|0|0
-1916638926|2020-06-12 12:25:05|2020-06-12 12:44:59|KRK-Offline-101.mltelecom|d9a45e5509a74b92|12.45.67.98|Mobile|MTelecom|235461361|42112061033255|Galaxy Core Duos I8262,Samsung,GSM|http|WebBrowsing|54240|223784
-1916638927|2020-06-12 12:24:17|2020-06-12 12:42:16|KRK-Offline-104.mltelecom|d9a45e5509a74b93|12.45.67.99|Mobile|MTelecom|234561346|665639076948265|Galaxy J1 (2016) Duos J120H/DS,Samsung,GSM|operamini|Tunneling|124124124|492
