@@ -32,8 +32,8 @@ object JsonExtractor {
     */
   def getJsonObj[T](jsonString: String)(implicit m: Manifest[T]): T = {
     extractJsonFromStr(jsonString.mkString) match {
-      case Success(jsonParsed) ⇒ jsonParsed
-      case Failure(exc) ⇒ throw new IllegalArgumentException(exc)
+      case Success(jsonParsed) => jsonParsed
+      case Failure(exc)        => throw new IllegalArgumentException(exc)
     }
   }
 

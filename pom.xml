@@ -8,37 +8,10 @@
     <parent>
         <groupId>com.gability.scala</groupId>
         <artifactId>scala-starter-parent</artifactId>
-        <version>1.36</version>
+        <version>1.38</version>
     </parent>
 
     <artifactId>spark-template-job</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <project.scm.id>github-spark-sandbox</project.scm.id>
-    </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>github-spark-sandbox</id>
-            <name>GitHub spark-sandbox Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/moustafaalaa/spark-sandbox</url>
-        </repository>
-    </distributionManagement>
-
-    <scm>
-        <connection>scm:git:https://github.com/moustafaalaaa/spark-sandbox.git</connection>
-        <developerConnection>scm:git:https://github.com/moustafaalaaa/spark-sandbox.git</developerConnection>
-        <url>https://github.com/moustafaalaaa/spark-sandbox</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.github.pureconfig/pureconfig -->
-        <dependency>
-            <groupId>com.github.pureconfig</groupId>
-            <artifactId>pureconfig_2.11</artifactId>
-            <version>0.12.3</version>
-        </dependency>
-    </dependencies>
 </project>
