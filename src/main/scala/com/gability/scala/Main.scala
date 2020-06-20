@@ -5,10 +5,11 @@ import java.time.temporal.ChronoUnit
 
 import com.gability.scala.common.config.ETLConfigManagement._
 import com.gability.scala.common.metadata.Metadata.JobConfig
-import com.gability.scala.EnvironmentConfig.{parseEnvConfig, Conf}
-import org.apache.log4j.{Level,                              Logger}
+import com.gability.scala.common.utils.EnvConfig.parseEnvConfig
+import com.gability.scala.Metadata.Conf
+import org.apache.log4j.{Level, Logger}
 import org.apache.logging.log4j.scala.Logging
-
+import pureconfig.generic.auto._
 object Main extends Logging {
 
   //TODO: create generic way for main args
@@ -20,7 +21,7 @@ object Main extends Logging {
       logger.info("Initialize Spark Session ..")
       val jobConfig: JobConfig = getJobConfig(args(0), args(1), args(2))
 
-      val jobProperties: Conf = parseEnvConfig(args(3))
+      val jobProperties: Conf = parseEnvConfig[Conf](args(3))
 
       logger.debug("Turn off spark internal logging ..")
       //TODO: get spark logging from log2j.xml

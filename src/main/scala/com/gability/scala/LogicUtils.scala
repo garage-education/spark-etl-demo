@@ -5,6 +5,7 @@ import org.apache.logging.log4j.scala.Logging
 import org.apache.spark.sql.{Dataset, Row}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{IntegerType, LongType, TimestampType}
+
 object LogicUtils extends Logging {
   def transformErcsnInputData(inputDs: Dataset[Row], imsiMaster: Dataset[Row], batchId: Long): Dataset[ErcsvInputData] = {
     import inputDs.sparkSession.implicits._
@@ -15,8 +16,8 @@ object LogicUtils extends Logging {
       .select(
         'imsi,
         when('subscriber_Id.isNull, -99999) otherwise 'subscriber_Id.cast(LongType) as "subscriberId",
-        when(length('imei) < 15,    "-99999") otherwise substring('imei, 0, 7) as "tac",
-        when(length('imei) < 15,    "-99999") otherwise substring('imei, 8, 13) as "snr",
+        when(length('imei) < 15, "-99999") otherwise substring('imei, 0, 7) as "tac",
+        when(length('imei) < 15, "-99999") otherwise substring('imei, 8, 13) as "snr",
         'imei,
         'cell.cast(IntegerType) as "cell",
         'lac.cast(IntegerType) as "lac",

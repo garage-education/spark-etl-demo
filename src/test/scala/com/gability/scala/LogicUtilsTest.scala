@@ -1,35 +1,39 @@
 package com.gability.scala
 
 import java.sql.Timestamp
-
-import com.gability.scala.common.utils.Constants.{ercsnSchemaTypeRenamed, etlInputTestFileName}
+import com.gability.scala.common.utils.Constants.etlInputTestFileName
 import com.gability.scala.common.utils.TestingUtils
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.apache.spark.sql.{DataFrame, Row}
-import org.scalatest.{BeforeAndAfter,   FunSuite, Matchers}
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 import com.gability.scala.common.utils.Constants._
 import com.gability.scala.Metadata.ErcsvInputData
 class LogicUtilsTest extends FunSuite with Matchers with BeforeAndAfter with DatasetSuiteBase {
+
   var testingUtils: TestingUtils = _
   before {
     testingUtils = new TestingUtils(spark)
     testingUtils.prepareHiveInputTables()
-
   }
 
   val inputSampleData: Seq[Row] = Seq(
     Row("310120265624299", "490154203237518", "1234", "99", "1", "2020-06-15 07:45:43", etlInputTestFileName),
     Row("310120265624299", "490154203237518", "5432", "54", "2", "2020-06-15 12:12:43", etlInputTestFileName),
-    Row("310120265624234", "490154203237543", "123",  "22", "1", "2020-06-15 12:12:43", etlInputTestFileName),
+    Row("310120265624234", "490154203237543", "123", "22", "1", "2020-06-15 12:12:43", etlInputTestFileName),
     Row("310120265624123", "490154203231245", "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName),
-    Row("310120265624123", null,              "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName)
+    Row("310120265624123", null, "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName)
   )
-  val colName = ercsnSchemaTypeRenamed.map(_.name)
+  val colName = ercsnSchemaType.map(_.name)
   val batchIdLong = batchId.toLong
+
   test("test transformErcsnInputData ") {
-    val inputDs: DataFrame = spark.createDataFrame(spark.sparkContext.parallelize(inputSampleData), ercsnSchemaTypeRenamed)
+    val inputDs: DataFrame = spark.createDataFrame(
+      spark.sparkContext.parallelize(inputSampleData),
+      ercsnSchemaType
+    )
     val imsiMaster = spark.table("imsi_master")
-    val acutalData = LogicUtils.transformErcsnInputData(inputDs, imsiMaster, batchIdLong)
+    val acutalData =
+      LogicUtils.transformErcsnInputData(inputDs, imsiMaster, batchIdLong)
 
     val expectedDs = Seq(
       ErcsvInputData(
@@ -84,17 +88,19 @@ class LogicUtilsTest extends FunSuite with Matchers with BeforeAndAfter with Dat
         batchIdLong,
         etlInputTestFileName
       ),
-      ErcsvInputData("310120265624123",
-                     54321,
-                     null,
-                     null,
-                     None,
-                     2435,
-                     11,
-                     Some("1"),
-                     Timestamp.valueOf("2020-06-15 12:12:43"),
-                     batchIdLong,
-                     etlInputTestFileName)
+      ErcsvInputData(
+        "310120265624123",
+        54321,
+        null,
+        null,
+        None,
+        2435,
+        11,
+        Some("1"),
+        Timestamp.valueOf("2020-06-15 12:12:43"),
+        batchIdLong,
+        etlInputTestFileName
+      )
     )
 
     acutalData.collect().toSeq should contain theSameElementsAs expectedDs

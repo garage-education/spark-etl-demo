@@ -17,7 +17,7 @@ object JsonExtractor {
     * @param m        : Manifest is an implicit param for parsing json to T
     * @return T object represent json case class
     */
-  def getJsonParsed[T](jsonPath: String)(implicit m: Manifest[T]): T = {
+  def getJsonParsedFromFile[T](jsonPath: String)(implicit m: Manifest[T]): T = {
     readResourceFile(jsonPath) match {
       case Success(jsonStr) => getJsonObj[T](jsonStr.mkString)
       case Failure(exc)     => throw new IllegalArgumentException(exc)
@@ -42,7 +42,9 @@ object JsonExtractor {
     * @param jsonString : String represent json string
     * @return Try[T] try [object T] represent json case class.
     */
-  def extractJsonFromStr[T](jsonString: String)(implicit m: Manifest[T]): Try[T] = {
+  def extractJsonFromStr[T](
+    jsonString: String
+  )(implicit m: Manifest[T]): Try[T] = {
     implicit val formats: DefaultFormats.type = DefaultFormats
     Try {
       parse(jsonString).extract[T]

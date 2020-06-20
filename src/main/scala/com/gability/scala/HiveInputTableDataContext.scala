@@ -1,7 +1,6 @@
 package com.gability.scala
 
-import com.gability.scala.EnvironmentConfig.Conf
-import com.gability.scala.Metadata.HiveInputDataContext
+import com.gability.scala.Metadata._
 import org.apache.logging.log4j.scala.Logging
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 

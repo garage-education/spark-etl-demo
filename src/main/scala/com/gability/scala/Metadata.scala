@@ -9,14 +9,16 @@ object Metadata {
 
   val ercsnStructSchema: StructType =
     StructType(
-      StructField("imsi",        StringType,    nullable = false) ::
-        StructField("imei",      StringType,    nullable = true) ::
-        StructField("cell",      IntegerType,   nullable = false) ::
-        StructField("lac",       IntegerType,   nullable = false) ::
-        StructField("eventType", StringType,    nullable = true) ::
-        StructField("eventTs",   TimestampType, nullable = false) ::
-        StructField("fileName",  StringType,    nullable = true) :: Nil
+      StructField("imsi", StringType, nullable = false) ::
+        StructField("imei", StringType, nullable = true) ::
+        StructField("cell", IntegerType, nullable = false) ::
+        StructField("lac", IntegerType, nullable = false) ::
+        StructField("eventType", StringType, nullable = true) ::
+        StructField("eventTs", TimestampType, nullable = false) ::
+        StructField("fileName", StringType, nullable = true) :: Nil
     )
+
+  case class Conf(configParam: String, imsiMaster: String)
 
   case class InputDataContext(imsiMaster: Dataset[Row])
 

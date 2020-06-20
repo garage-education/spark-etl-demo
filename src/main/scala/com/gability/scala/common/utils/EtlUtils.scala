@@ -25,8 +25,6 @@ object EtlUtils {
     getJsonObj[T](jsonString)
   }
 
-  val getFileNameFromPathUDF: UserDefinedFunction = udf[String, String](_.split("/").last.split('.').head)
-
   def validateDataset(inputDs: Dataset[Row], schemaStruct: StructType): (Dataset[Row], Dataset[Row]) = {
 
     val colNames = schemaStruct.map(_.name)
@@ -63,15 +61,15 @@ object EtlUtils {
     }
 
   val validatorMap: Map[DataType, String => Boolean] = Map(
-    StringType    -> parse[String],
-    IntegerType   -> parse[Int],
-    TimestampType -> parse[Timestamp],
-    ShortType     -> parse[Short],
-    LongType      -> parse[Long],
-    FloatType     -> parse[Float],
-    DoubleType    -> parse[Double],
-    BooleanType   -> parse[Boolean],
-    DateType      -> parse[Date]
+    StringType    -> canParse[String],
+    IntegerType   -> canParse[Int],
+    TimestampType -> canParse[Timestamp],
+    ShortType     -> canParse[Short],
+    LongType      -> canParse[Long],
+    FloatType     -> canParse[Float],
+    DoubleType    -> canParse[Double],
+    BooleanType   -> canParse[Boolean],
+    DateType      -> canParse[Date]
   )
 
   def nullableValidator(validator: String => Boolean): String => Boolean = a => a == null || validator(a)

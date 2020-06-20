@@ -1,11 +1,10 @@
 package com.gability.scala.common.io
 
-import java.io.{File,        FileInputStream, FileOutputStream, InputStream}
+import java.io.{File, FileInputStream, FileOutputStream, InputStream}
 import java.nio.file.{Files, Paths}
 import java.util.zip.ZipInputStream
 
-import scala.io.Source
-import scala.io.Source.fromFile
+import scala.io.{BufferedSource, Source}
 import scala.util.Try
 
 object FilesHandler {
@@ -34,7 +33,9 @@ object FilesHandler {
     Try {
       getClass.getResource(path).getPath
     }.getOrElse(
-      throw new IllegalArgumentException("Path not found Exception, Path= %s".format(path)) //TODO: create exception types
+      throw new IllegalArgumentException(
+        "Path not found Exception, Path= %s".format(path)
+      ) //TODO: create exception types
     )
     /*catch {
       case e: FileNotFoundException => println("Couldn't find that file.")
@@ -57,7 +58,10 @@ object FilesHandler {
   def readResourceFile(filePath: String): Try[String] =
     Try {
       val jsonFile = new File(getResourceTestPath(filePath))
-      fromFile(jsonFile).getLines().mkString
+      val bufferSource: BufferedSource = Source.fromFile(jsonFile)
+      val str = bufferSource.getLines().mkString
+      bufferSource.close()
+      str
     }
 
   /** getListOfFiles given input and extension pattern filter
@@ -67,7 +71,9 @@ object FilesHandler {
     * @param filesLimit :Int number of files to get from the list
     * @return List[File] list of input path dir filtered by the extension
     */
-  def getListOfFiles(dir: String, extension: String, filesLimit: Int): List[File] = {
+  def getListOfFiles(dir: String,
+                     extension: String,
+                     filesLimit: Int): List[File] = {
     val allFilesList = new File(dir).listFiles
       .filter(_.isFile)
       .toList
@@ -86,7 +92,7 @@ object FilesHandler {
     */
   def unzip(inputZipFilePath: String, destination: String): Unit = {
     //val outPutFolder: File = new File(inputZipFilePath)
-    val inputFileStream   = new FileInputStream(inputZipFilePath)
+    val inputFileStream = new FileInputStream(inputZipFilePath)
     val zippedInputStream = new ZipInputStream(inputFileStream)
 
     Stream
@@ -94,15 +100,15 @@ object FilesHandler {
       .takeWhile(_ != null)
       .foreach { file =>
         if (!file.isDirectory) {
-          val outPath       = Paths.get(destination).resolve(file.getName)
+          val outPath = Paths.get(destination).resolve(file.getName)
           val outPathParent = outPath.getParent
           if (!outPathParent.toFile.exists()) {
             outPathParent.toFile.mkdirs()
           }
 
           val outFile = outPath.toFile
-          val out     = new FileOutputStream(outFile)
-          val buffer  = new Array[Byte](4096)
+          val out = new FileOutputStream(outFile)
+          val buffer = new Array[Byte](4096)
           Stream
             .continually(zippedInputStream.read(buffer))
             .takeWhile(_ != -1)

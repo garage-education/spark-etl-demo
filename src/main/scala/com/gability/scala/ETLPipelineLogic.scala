@@ -3,9 +3,8 @@ package com.gability.scala
 import com.gability.scala.common.io.HadoopFileHandler
 import com.gability.scala.common.metadata.Metadata.{JobConfig, JobParamRawDtl}
 import com.gability.scala.common.utils.EtlUtils._
-import com.gability.scala.Metadata.ercsnStructSchema
+import com.gability.scala.Metadata.{ercsnStructSchema, Conf}
 import com.gability.scala.common.utils.EtlUtils
-import com.gability.scala.EnvironmentConfig.Conf
 import org.apache.logging.log4j.scala.Logging
 import org.apache.spark.sql.{Dataset, SaveMode, SparkSession}
 import org.apache.spark.sql.functions.lit
@@ -21,7 +20,7 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
   import spark.implicits._
   def jobLogicRunner(): Unit = {
     logger.info("Start Reading json from param file")
-    val batchId: Long   = jobConfig.configDS.map(_.batchId).head()
+    val batchId: Long = jobConfig.configDS.map(_.batchId).head()
     val jsonStr: String = jobConfig.configDS.map(_.jobParams("json")).head()
 
     logger.info("parsing json string as JobParamRawDtl")
