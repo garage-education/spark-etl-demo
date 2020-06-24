@@ -16,6 +16,9 @@ object TypeValidator {
   implicit val validateFloat:     ParseOp[Float] = ParseOp[Float](_.toFloat)
   implicit val validateBoolean:   ParseOp[Boolean] = ParseOp[Boolean](_.toBoolean)
   implicit val validateDate:      ParseOp[Date] = ParseOp[Date](Date.valueOf)
+  implicit val validateDecimal: ParseOp[BigDecimal] = ParseOp[BigDecimal] { s =>
+    BigDecimal.valueOf(s.toDouble)
+  }
 
   def canParse[T: ParseOp](s: String): Boolean = Try { implicitly[ParseOp[T]].op(s) }.isSuccess
 
