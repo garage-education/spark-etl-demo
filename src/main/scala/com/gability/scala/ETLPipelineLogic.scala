@@ -3,10 +3,10 @@ package com.gability.scala
 import com.gability.scala.common.io.HadoopFileHandler
 import com.gability.scala.common.metadata.Metadata.{JobConfig, JobParamRawDtl}
 import com.gability.scala.common.utils.EtlUtils._
-import com.gability.scala.Metadata.{ercsnStructSchema, Conf}
+import com.gability.scala.Metadata.{Conf, ErcsvInputData, ercsnStructSchema}
 import com.gability.scala.common.utils.EtlUtils
 import org.apache.logging.log4j.scala.Logging
-import org.apache.spark.sql.{Dataset, SaveMode, SparkSession}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SaveMode, SparkSession}
 import org.apache.spark.sql.functions.lit
 import org.apache.spark.storage.StorageLevel
 
@@ -18,7 +18,7 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
 
   val spark: SparkSession = jobConfig.sparkSession
   import spark.implicits._
-  def jobLogicRunner(): Unit = {
+  def jobLogicRunner(): (Dataset[ErcsvInputData], Dataset[Row]) = {
     logger.info("Start Reading json from param file")
     val batchId: Long = jobConfig.configDS.map(_.batchId).head()
     val jsonStr: String = jobConfig.configDS.map(_.jobParams("json")).head()
@@ -33,24 +33,26 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
     val (validDs, inValidDs) = EtlUtils.validateDataset(inputDs, ercsnStructSchema)
 
     logger.info("adding batchId to invalid source system")
-    val invalidDsWithBatch = inValidDs.withColumn("batch_id", lit(batchId))
+    val invalidDsWithBatch: DataFrame = inValidDs.withColumn("batch_id", lit(batchId))
 
-    logger.info("write rejected records")
-    HadoopFileHandler.writeDelimitedFile(param.rejectedRecordsPath, invalidDsWithBatch, param.dataFileDelimiter)
+    /*logger.info("write rejected records")
+    HadoopFileHandler.writeDelimitedFile(param.rejectedRecordsPath, invalidDsWithBatch, param.dataFileDelimiter)*/
 
     logger.info("get hive input data context")
     val inputDataContext = HiveInputTableDataContext(spark, props).getHiveInputDataContext
 
     logger.info("Start transformation for input data sources")
-    val transformedData: Dataset[Metadata.ErcsvInputData] =
+    val transformedData: Dataset[ErcsvInputData] =
       LogicUtils.transformErcsnInputData(validDs, inputDataContext.imsiMaster, batchId)
 
-    logger.info("Write tranformed data to output path with repartition by option")
+    /*    logger.info("Write tranformed data to output path with repartition by option")
     transformedData.write
       .mode(SaveMode.Append)
       .partitionBy(param.partitionColumns)
       .saveAsTable(param.targetTables.head)
-    logger.info("Writing done.. ")
+    logger.info("Writing done.. ")*/
+
+    (transformedData, invalidDsWithBatch)
   }
 
 }
