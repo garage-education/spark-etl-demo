@@ -14,10 +14,13 @@ class MainTest extends FunSuite with Matchers with DatasetSuiteBase with BeforeA
   var testingUtils:  TestingUtils = _
   var jobProperties: Conf = _
   before {
+    System.setProperty("hadoop.home.dir", "C:\\HADOOP\\bin\\winutils.exe")
+
     testingUtils = new TestingUtils(spark)
     testingUtils.prepareHiveInputTables()
     jobConfig = getJobConfig(jobId, jobName, batchId)
     jobProperties = parseEnvConfig[Conf]("dev")
+    println(jobProperties)
   }
 
   test("Testing prepare data logic ") {

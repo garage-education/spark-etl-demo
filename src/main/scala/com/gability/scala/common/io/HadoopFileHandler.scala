@@ -25,6 +25,7 @@ object HadoopFileHandler {
       .format(fileFormat)
       .option("delimiter", fileDelimiter)
       .option("header", hasHeader)
+      .option("quote", "\'") //TODO: explain this
       .load(filePath)
   }
 

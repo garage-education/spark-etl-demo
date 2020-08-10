@@ -12,7 +12,7 @@ case class HiveInputTableDataContext(spark: SparkSession, config: Conf) extends 
     logger.debug("%s".format(configParam.show))
 
     logger.info("register table imsi_master")
-    val imsiMaster = spark.table(config.configParam)
+    val imsiMaster = spark.table(config.imsiMaster) //TODO: explain this
     logger.debug("%s".format(imsiMaster.show()))
 
     HiveInputDataContext(configParam, imsiMaster)

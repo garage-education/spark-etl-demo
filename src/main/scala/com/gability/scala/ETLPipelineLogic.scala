@@ -21,6 +21,7 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
   def jobLogicRunner(): (Dataset[ErcsvInputData], Dataset[Row]) = {
     logger.info("Start Reading json from param file")
     val batchId: Long = jobConfig.configDS.map(_.batchId).head()
+
     val jsonStr: String = jobConfig.configDS.map(_.jobParams("json")).head()
 
     logger.info("parsing json string as JobParamRawDtl")
@@ -35,22 +36,13 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
     logger.info("adding batchId to invalid source system")
     val invalidDsWithBatch: DataFrame = inValidDs.withColumn("batch_id", lit(batchId))
 
-    /*logger.info("write rejected records")
-    HadoopFileHandler.writeDelimitedFile(param.rejectedRecordsPath, invalidDsWithBatch, param.dataFileDelimiter)*/
-
     logger.info("get hive input data context")
     val inputDataContext = HiveInputTableDataContext(spark, props).getHiveInputDataContext
 
     logger.info("Start transformation for input data sources")
+
     val transformedData: Dataset[ErcsvInputData] =
       LogicUtils.transformErcsnInputData(validDs, inputDataContext.imsiMaster, batchId)
-
-    /*    logger.info("Write tranformed data to output path with repartition by option")
-    transformedData.write
-      .mode(SaveMode.Append)
-      .partitionBy(param.partitionColumns)
-      .saveAsTable(param.targetTables.head)
-    logger.info("Writing done.. ")*/
 
     (transformedData, invalidDsWithBatch)
   }
