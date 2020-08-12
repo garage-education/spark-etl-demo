@@ -7,6 +7,7 @@ object Constants {
   val jobId = "12345678910"
   val jobName = "etl-pipeline-test"
   val batchId = "20200612152928"
+  val batchIdLong = 20200612152928L
   case class SimpleJsonObj(name: String, age: Int)
 
   val ercsnSchemaType = StructType(

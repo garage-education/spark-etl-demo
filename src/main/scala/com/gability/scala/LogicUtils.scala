@@ -28,7 +28,6 @@ object LogicUtils extends Logging {
       )
       .as[ErcsvInputData]
 
-    logger.debug("%s".format(inputDsJoinedImsi.show))
     inputDsJoinedImsi
   }
 }

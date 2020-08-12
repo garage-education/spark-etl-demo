@@ -8,7 +8,7 @@ class EnvConfigTest extends FunSuite with Matchers {
 
   test("test json extractor ") {
 
-    val expectedParsedConfig = Conf("sandbox.job_config", "sandbox.imsi_master")
+    val expectedParsedConfig = Conf("job_config", "imsi_master")
 
     val actualJsonParsed = parseEnvConfig[Conf]("dev")
 

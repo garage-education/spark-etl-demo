@@ -35,6 +35,7 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
 
     logger.info("adding batchId to invalid source system")
     val invalidDsWithBatch: DataFrame = inValidDs.withColumn("batch_id", lit(batchId))
+    logger.debug("%s".format(invalidDsWithBatch.show(truncate = false)))
 
     logger.info("get hive input data context")
     val inputDataContext = HiveInputTableDataContext(spark, props).getHiveInputDataContext
@@ -43,6 +44,7 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
 
     val transformedData: Dataset[ErcsvInputData] =
       LogicUtils.transformErcsnInputData(validDs, inputDataContext.imsiMaster, batchId)
+    logger.debug("%s".format(transformedData.show(truncate = false)))
 
     (transformedData, invalidDsWithBatch)
   }
