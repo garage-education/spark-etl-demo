@@ -200,15 +200,16 @@ class MainTest extends FunSuite with Matchers with DatasetSuiteBase with BeforeA
     )
 
     val expectedInvalid: Seq[Row] = Seq(
-      Row(null, "3214324134", "21421", "12421", "2", "2020-06-15 12:12:43", etlInputTestFileName, batchId),
-      Row("214214", "12421412421124", null, "124", "1", "2020-06-15 12:12:43", etlInputTestFileName, batchId),
-      Row("214214", "12421412421124", "11", null, "1", "2020-06-15 12:12:43", etlInputTestFileName, batchId),
-      Row("214214", "12421412421124", "11", "444", "1", null, etlInputTestFileName, batchId)
+      Row(null, "3214324134", "21421", "12421", "2", "2020-06-15 12:12:43", etlInputTestFileName, batchIdLong),
+      Row("214214", "12421412421124", null, "124", "1", "2020-06-15 12:12:43", etlInputTestFileName, batchIdLong),
+      Row("214214", "12421412421124", "11", null, "1", "2020-06-15 12:12:43", etlInputTestFileName, batchIdLong),
+      Row("214214", "12421412421124", "11", "444", "1", null, etlInputTestFileName, batchIdLong)
     )
 
-    actualValid.collect.toSeq shouldEqual (expectedValid)
+    actualValid.collect.toSeq shouldEqual expectedValid
+    val expectedInValid: DataFrame = spark.createDataFrame(spark.sparkContext.parallelize(expectedInvalid), ercsnRejSchemaType)
 
-    actualInvalidDt.collect.toSeq shouldEqual (expectedInvalid)
+    assertDataFrameEquals(actualInvalidDt, expectedInValid)
 
   }
 }

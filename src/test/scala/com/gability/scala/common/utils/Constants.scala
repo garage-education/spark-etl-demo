@@ -1,6 +1,6 @@
 package com.gability.scala.common.utils
 
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
 
 object Constants {
   val etlInputTestFileName = "ercsn_4g_20200512182929_part02"
@@ -18,5 +18,16 @@ object Constants {
       StructField("eventType", StringType, nullable = true) ::
       StructField("eventTs", StringType, nullable = true) ::
       StructField("fileName", StringType, nullable = true) :: Nil
+  )
+
+  val ercsnRejSchemaType = StructType(
+    StructField("imsi", StringType, nullable = true) ::
+      StructField("imei", StringType, nullable = true) ::
+      StructField("cell", StringType, nullable = true) ::
+      StructField("lac", StringType, nullable = true) ::
+      StructField("eventType", StringType, nullable = true) ::
+      StructField("eventTs", StringType, nullable = true) ::
+      StructField("fileName", StringType, nullable = true) ::
+      StructField("batch_id", LongType, nullable = false) :: Nil
   )
 }
