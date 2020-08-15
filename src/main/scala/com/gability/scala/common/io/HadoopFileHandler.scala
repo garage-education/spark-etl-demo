@@ -15,7 +15,7 @@ object HadoopFileHandler {
       .option("delimiter", param.dataFileDelimiter)
       .option("header", param.header)
       .csv(param.inputSourcePath + param.processingSuffix)
-      .withColumn("fileName", getFileNameFromPathUDF(input_file_name()))
+      .withColumn("file_name", getFileNameFromPathUDF(input_file_name()))
       .toDF(inputColsNames: _*)
   }
 

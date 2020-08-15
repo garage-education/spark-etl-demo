@@ -27,7 +27,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "99",
         "1",
         "2020-06-15 07:45:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624299",
@@ -36,7 +36,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "54",
         "2",
         "2020-06-15 12:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624299",
@@ -45,7 +45,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "54",
         "1",
         "2020-06-15 15:41:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624299",
@@ -54,7 +54,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "99",
         "4",
         "2020-06-15 19:11:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624299",
@@ -63,7 +63,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "99",
         "3",
         "2020-06-15 20:00:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624234",
@@ -72,7 +72,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "22",
         "1",
         "2020-06-15 12:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624234",
@@ -81,7 +81,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "21",
         "1",
         "2020-06-15 15:31:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624234",
@@ -90,7 +90,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "65",
         "2",
         "2020-06-15 17:53:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624234",
@@ -99,7 +99,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "66",
         "2",
         "2020-06-15 20:13:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624234",
@@ -108,7 +108,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "33",
         "4",
         "2020-06-15 22:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624654",
@@ -117,7 +117,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "22",
         "1",
         "2020-06-15 12:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265624123",
@@ -126,7 +126,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "11",
         "1",
         "2020-06-15 12:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "310120265627654",
@@ -135,7 +135,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "43",
         "1",
         "2020-06-15 12:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         null,
@@ -144,7 +144,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "12421",
         "2",
         "2020-06-15 12:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "214214",
@@ -153,7 +153,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "124",
         "1",
         "2020-06-15 12:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "214214",
@@ -162,7 +162,7 @@ class HadoopFileHandlerTest extends TraitTest {
         null,
         "1",
         "2020-06-15 12:12:43",
-        etlInputTestFileName
+        inputTestFile
       ),
       Row(
         "214214",
@@ -171,7 +171,7 @@ class HadoopFileHandlerTest extends TraitTest {
         "444",
         "1",
         null,
-        etlInputTestFileName
+        inputTestFile
       )
     )
 

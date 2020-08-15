@@ -1,6 +1,6 @@
 package com.gability.scala
 
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Dataset, Row}
@@ -15,7 +15,7 @@ object Metadata {
         StructField("lac", IntegerType, nullable = false) ::
         StructField("eventType", StringType, nullable = true) ::
         StructField("eventTs", TimestampType, nullable = false) ::
-        StructField("fileName", StringType, nullable = true) :: Nil
+        StructField("file_name", StringType, nullable = true) :: Nil
     )
 
   case class Conf(configParam: String, imsiMaster: String)
@@ -31,8 +31,9 @@ object Metadata {
                             lac:          Int,
                             eventType:    Option[String],
                             eventTs:      Timestamp,
-                            batchId:      Long,
-                            fileName:     String)
+                            file_name:    String,
+                            event_date:   Date,
+                            batch_id:     Long)
 
   case class HiveInputDataContext(configParam: Dataset[Row], imsiMaster: Dataset[Row])
 }

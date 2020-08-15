@@ -23,8 +23,9 @@ object LogicUtils extends Logging {
         'lac.cast(IntegerType) as "lac",
         'eventType,
         'eventTs.cast(TimestampType),
-        lit(batchId) as "batchId",
-        'fileName
+        'file_name,
+        to_date('eventTs) as "event_date",
+        lit(batchId) as "batch_id"
       )
       .as[ErcsvInputData]
 

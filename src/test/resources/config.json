@@ -1,7 +1,7 @@
 {
   "sourceName": "3G_ERCSN",
   "rejection": {
-    "rejectedRecordsPath": "/data/processed/3G_ERCSN/",
+    "rejectedRecordsPath": "/home/moustafa/Scala/spark-etl-demo/data/processed/3G_ERCSN/",
     "rejectOutputType": "csv"
   },
   "inputSource": {
@@ -43,7 +43,7 @@
         "isNullable": false
       },
       {
-        "columnName": "fileName",
+        "columnName": "file_name",
         "columnType": "StringType",
         "isNullable": false
       }

@@ -5,6 +5,7 @@ import com.gability.scala.common.metadata.Metadata.JobConfig
 import com.gability.scala.common.utils.EnvConfig.parseEnvConfig
 import com.gability.scala.Metadata.Conf
 import org.apache.logging.log4j.scala.Logging
+import org.apache.spark.sql.SaveMode
 import pureconfig.generic.auto._
 object Main extends Logging {
 
@@ -24,13 +25,16 @@ object Main extends Logging {
       param.targetSource.foreach(
         src =>
           valid.write
-            .partitionBy(src.partitionColumns)
+            .partitionBy("event_date", "batch_id")
             .format(src.outputFormat)
             .mode(src.saveMode)
-            .saveAsTable(src.targetSchema + src.targetTable))
+            .saveAsTable(src.targetSchema + "." + src.targetTable))
 
       logger.info("Insert inValid records into target path ..")
-      invalid.write.format(param.rejection.rejectOutputType).save(param.rejection.rejectedRecordsPath)
+      invalid.write
+        .format(param.rejection.rejectOutputType)
+        .mode(SaveMode.Overwrite)
+        .save(param.rejection.rejectedRecordsPath)
 
     } else {
       val usage = """ Usage: spark-submit pipeline-0.1-jar-with-dependencies.jar job_id job_name """

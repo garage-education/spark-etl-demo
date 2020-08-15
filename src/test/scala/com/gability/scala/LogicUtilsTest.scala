@@ -1,13 +1,12 @@
 package com.gability.scala
 
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 
-import Constants.etlInputTestFileName
+import Constants.{batchIdLong, inputTestFile, _}
 import com.gability.scala.common.utils.TraitTest
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.apache.spark.sql.{DataFrame, Row}
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
-import Constants._
 import com.gability.scala.Metadata.ErcsvInputData
 class LogicUtilsTest extends TraitTest {
 
@@ -18,11 +17,11 @@ class LogicUtilsTest extends TraitTest {
   }
 
   val inputSampleData: Seq[Row] = Seq(
-    Row("310120265624299", "490154203237518", "1234", "99", "1", "2020-06-15 07:45:43", etlInputTestFileName),
-    Row("310120265624299", "490154203237518", "5432", "54", "2", "2020-06-15 12:12:43", etlInputTestFileName),
-    Row("310120265624234", "490154203237543", "123", "22", "1", "2020-06-15 12:12:43", etlInputTestFileName),
-    Row("310120265624123", "490154203231245", "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName),
-    Row("310120265624123", null, "2435", "11", "1", "2020-06-15 12:12:43", etlInputTestFileName)
+    Row("310120265624299", "490154203237518", "1234", "99", "1", "2020-06-15 07:45:43", inputTestFile),
+    Row("310120265624299", "490154203237518", "5432", "54", "2", "2020-06-15 12:12:43", inputTestFile),
+    Row("310120265624234", "490154203237543", "123", "22", "1", "2020-06-15 12:12:43", inputTestFile),
+    Row("310120265624123", "490154203231245", "2435", "11", "1", "2020-06-15 12:12:43", inputTestFile),
+    Row("310120265624123", null, "2435", "11", "1", "2020-06-15 12:12:43", inputTestFile)
   )
   val colName = ercsnSchemaType.map(_.name)
   val batchIdLong = batchId.toLong
@@ -47,8 +46,9 @@ class LogicUtilsTest extends TraitTest {
         99,
         Some("1"),
         Timestamp.valueOf("2020-06-15 07:45:43"),
-        batchIdLong,
-        etlInputTestFileName
+        inputTestFile,
+        Date.valueOf("2020-06-15"),
+        batchIdLong
       ),
       ErcsvInputData(
         "310120265624299",
@@ -60,8 +60,9 @@ class LogicUtilsTest extends TraitTest {
         54,
         Some("2"),
         Timestamp.valueOf("2020-06-15 12:12:43"),
-        batchIdLong,
-        etlInputTestFileName
+        inputTestFile,
+        Date.valueOf("2020-06-15"),
+        batchIdLong
       ),
       ErcsvInputData(
         "310120265624234",
@@ -73,8 +74,9 @@ class LogicUtilsTest extends TraitTest {
         22,
         Some("1"),
         Timestamp.valueOf("2020-06-15 12:12:43"),
-        batchIdLong,
-        etlInputTestFileName
+        inputTestFile,
+        Date.valueOf("2020-06-15"),
+        batchIdLong
       ),
       ErcsvInputData(
         "310120265624123",
@@ -86,8 +88,9 @@ class LogicUtilsTest extends TraitTest {
         11,
         Some("1"),
         Timestamp.valueOf("2020-06-15 12:12:43"),
-        batchIdLong,
-        etlInputTestFileName
+        inputTestFile,
+        Date.valueOf("2020-06-15"),
+        batchIdLong
       ),
       ErcsvInputData(
         "310120265624123",
@@ -99,8 +102,9 @@ class LogicUtilsTest extends TraitTest {
         11,
         Some("1"),
         Timestamp.valueOf("2020-06-15 12:12:43"),
-        batchIdLong,
-        etlInputTestFileName
+        inputTestFile,
+        Date.valueOf("2020-06-15"),
+        batchIdLong
       )
     )
 

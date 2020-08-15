@@ -1,7 +1,7 @@
 ### Scala template
 *.class
 *.log
-
+spark-warehouse/
 ### Maven template
 target/
 pom.xml.tag
