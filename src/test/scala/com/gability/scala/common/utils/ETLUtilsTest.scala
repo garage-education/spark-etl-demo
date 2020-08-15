@@ -7,7 +7,7 @@ import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.apache.spark.sql.{DataFrame, Dataset, Row}
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 
-class ETLUtilsTest extends FunSuite with Matchers with BeforeAndAfter with DatasetSuiteBase {
+class ETLUtilsTest extends TraitTest {
 
   val inputSampleData: Seq[(String, String, String, String, String, String, String)] = Seq(
     ("310120265624299", "490154203237518", "1234", "99", "1", "2020-06-15 07:45:43", etlInputTestFileName),
@@ -54,7 +54,7 @@ class ETLUtilsTest extends FunSuite with Matchers with BeforeAndAfter with Datas
       Row("214214", "12421412421124", "11", "444", "1", null, etlInputTestFileName)
     )
     val expectedInValid: DataFrame = spark.createDataFrame(spark.sparkContext.parallelize(expectedInvalid), ercsnSchemaType)
-    actualInvalidDt.collect.toSeq shouldEqual (expectedInvalid)
+    actualInvalidDt.collect.toSeq shouldEqual expectedInvalid
     assertDatasetEquals(expectedInValid, actualInvalidDt)
 
   }

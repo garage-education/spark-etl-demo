@@ -4,11 +4,12 @@ import com.gability.scala.common.io.HadoopFileHandler._
 import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
 import com.gability.scala.common.utils.Constants._
 import com.gability.scala.common.utils.JsonExtractor.getJsonParsedFromFile
+import com.gability.scala.common.utils.TraitTest
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.apache.spark.sql.Row
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 
-class HadoopFileHandlerTest extends FunSuite with Matchers with BeforeAndAfter with DatasetSuiteBase {
+class HadoopFileHandlerTest extends TraitTest {
 
   var param: JobParamRawDtl = _
 

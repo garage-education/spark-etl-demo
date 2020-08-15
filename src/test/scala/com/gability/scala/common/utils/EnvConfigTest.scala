@@ -4,7 +4,7 @@ import com.gability.scala.common.utils.EnvConfig._
 import com.gability.scala.Metadata.Conf
 import org.scalatest.{FunSuite, Matchers}
 import pureconfig.generic.auto._
-class EnvConfigTest extends FunSuite with Matchers {
+class EnvConfigTest extends TraitTest {
 
   test("test json extractor ") {
 
@@ -12,6 +12,6 @@ class EnvConfigTest extends FunSuite with Matchers {
 
     val actualJsonParsed = parseEnvConfig[Conf]("dev")
 
-    expectedParsedConfig shouldEqual (actualJsonParsed)
+    expectedParsedConfig shouldEqual actualJsonParsed
   }
 }

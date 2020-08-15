@@ -5,7 +5,7 @@ import com.gability.scala.common.utils.Constants.SimpleJsonObj
 import com.gability.scala.common.utils.JsonExtractor._
 import org.scalatest._
 
-class JsonValidator extends FunSuite with Matchers {
+class JsonValidator extends TraitTest {
   test("json extractor from json string") {
 
     val simpleJsonStr = """{"name":"Moustafa","age":3}"""
@@ -31,13 +31,13 @@ class JsonValidator extends FunSuite with Matchers {
       "false",
       "event_date,batch_id",
       List(
-        SchemaDtl("imsi", "StringType", false),
-        SchemaDtl("imei", "StringType", true),
-        SchemaDtl("cell", "IntegerType", false),
-        SchemaDtl("lac", "IntegerType", false),
-        SchemaDtl("eventType", "StringType", true),
-        SchemaDtl("eventTs", "TimestampType", false),
-        SchemaDtl("fileName", "StringType", false)
+        SchemaDtl("imsi", "StringType", isNullable = false),
+        SchemaDtl("imei", "StringType", isNullable = true),
+        SchemaDtl("cell", "IntegerType", isNullable = false),
+        SchemaDtl("lac", "IntegerType", isNullable = false),
+        SchemaDtl("eventType", "StringType", isNullable = true),
+        SchemaDtl("eventTs", "TimestampType", isNullable = false),
+        SchemaDtl("fileName", "StringType", isNullable = false)
       )
     )
 

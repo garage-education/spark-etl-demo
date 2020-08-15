@@ -1,14 +1,15 @@
 package com.gability.scala
 
 import java.sql.Timestamp
+
 import com.gability.scala.common.utils.Constants.etlInputTestFileName
-import com.gability.scala.common.utils.TestingUtils
+import com.gability.scala.common.utils.{TestingUtils, TraitTest}
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.apache.spark.sql.{DataFrame, Row}
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 import com.gability.scala.common.utils.Constants._
 import com.gability.scala.Metadata.ErcsvInputData
-class LogicUtilsTest extends FunSuite with Matchers with BeforeAndAfter with DatasetSuiteBase {
+class LogicUtilsTest extends TraitTest {
 
   var testingUtils: TestingUtils = _
   before {

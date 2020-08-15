@@ -6,18 +6,23 @@
                     pattern="%d{YYYY-MM-dd HH:mm:ss} %highlight{%-5level}{FATAL=red blink, ERROR=red, DEBUG=yellow bold, INFO=green bold, DEBUG=blue bold, TRACE=cyan} %style{%replace{%c{1}}{\$}{}:%L}{cyan} - %m%n"
                     disableAnsi="false"/>
         </Console>
-        <File name="MyFile" fileName="logs/etl.log">
+        <File name="LogFile" fileName="logs/etl.log">
             <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
 
     </Appenders>
 
     <Loggers>
-        <Root level="DEBUG">
+        <Root level="INFO">
             <AppenderRef ref="ConsoleAppender"/>
-            <appenderRef ref="MyFile"/>
-
+            <appenderRef ref="LogFile"/>
         </Root>
-        <Logger name="com.gability.scala" level="${sys:modelLogLevel:-DEBUG}"/>
+        <Logger name="com.gability.scala" level="${sys:modelLogLevel:-INFO}"/>
+        <logger name="org.apache.spark" level="error"/>
+        <logger name="org.spark-project" level="error"/>
+        <logger name="org.apache.hadoop" level="error"/>
+        <logger name="io.netty" level="error"/>
+        <logger name="org.apache.zookeeper" level="error"/>
+        <logger name="org" level="error"/>
     </Loggers>
 </Configuration>
