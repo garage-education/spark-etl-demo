@@ -18,21 +18,23 @@ object Metadata {
                                    config_seq:   String,
                                    update_ts:    Timestamp)
 
-  case class JobParamRawDtl(sourceName:            String,
-                            inputFilesType:        String, //TODO: file types enum ```IOType```
-                            dataFileDelimiter:     String, //TODO: make it Option[String]
-                            totalInputFileColumns: String,
-                            inputSourcePath:       String,
-                            rejectedRecordsPath:   String,
-                            rejectOutputType:      String, //TODO: file types enum ```IOType```
-                            targetTables:          List[String],
-                            saveMode:              String,
-                            processingSuffix:      String,
-                            outputFormat:          String,
-                            header:                String,
-                            partitionColumns:      String,
-                            inputSchema:           List[SchemaDtl])
+  case class JobParamRawDtl(sourceName: String, inputSource: InputSource, rejection: Rejection, targetSource: List[TargetSource])
+
+  final case class TargetSource(targetTable: String, targetSchema: String, partitionColumns: String, outputFormat: String, saveMode: String)
 
   final case class SchemaDtl(columnName: String, columnType: String, isNullable: Boolean)
+  final case class Rejection(
+      rejectedRecordsPath: String,
+      rejectOutputType:    String //TODO: filtargetSourcee types enum ```IOType```
+  )
+  final case class InputSource(
+      inputFilesType:        String, //TODO: file types enum ```IOType```
+      dataFileDelimiter:     String, //TODO: make it Option[String]
+      totalInputFileColumns: String,
+      inputSourcePath:       String,
+      processingSuffix:      String,
+      header:                String,
+      inputSchema:           List[SchemaDtl]
+  )
 
 }

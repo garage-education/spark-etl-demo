@@ -202,11 +202,12 @@ class MainTest extends TraitTest {
   }
 
   test("Testing prepare data logic ") {
-    val (actualValid, actualInvalidDt) = ETLPipelineLogic(jobConfig, jobProperties).jobLogicRunner()
+    val (actualValid, actualInvalidDt, param) = ETLPipelineLogic(jobConfig, jobProperties).jobLogicRunner()
     val expectedInValid: DataFrame = spark.createDataFrame(spark.sparkContext.parallelize(expectedInvalid), ercsnRejSchemaType)
 
     actualValid.collect.toSeq shouldEqual expectedValid
     assertDataFrameEquals(actualInvalidDt, expectedInValid)
+    param shouldEqual expectedJsonParsed
 
   }
 }

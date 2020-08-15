@@ -180,7 +180,7 @@ class HadoopFileHandlerTest extends TraitTest {
       ercsnSchemaType
     )
 
-    val inputDs = readDelimitedFile(param, spark)
+    val inputDs = readDelimitedFile(param.inputSource, spark)
     assertDataFrameEquals(expectedValid, inputDs)
   }
 

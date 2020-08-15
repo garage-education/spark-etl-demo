@@ -18,17 +18,15 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
 
   val spark: SparkSession = jobConfig.sparkSession
   import spark.implicits._
-  def jobLogicRunner(): (Dataset[ErcsvInputData], Dataset[Row]) = {
+  def jobLogicRunner(): (Dataset[ErcsvInputData], Dataset[Row], JobParamRawDtl) = {
     logger.info("Start Reading json from param file")
-    val batchId: Long = jobConfig.configDS.map(_.batchId).head()
-
-    val jsonStr: String = jobConfig.configDS.map(_.jobParams("json")).head()
+    val (batchId, jsonStr) = jobConfig.configDS.map(x => (x.batchId, x.jobParams("json"))).head() //handle error
 
     logger.info("parsing json string as JobParamRawDtl")
     val param: JobParamRawDtl = getInputFileParam[JobParamRawDtl](jsonStr)
 
     logger.info("read delimited file and compare with struct type")
-    val inputDs = HadoopFileHandler.readDelimitedFile(param, spark)
+    val inputDs = HadoopFileHandler.readDelimitedFile(param.inputSource, spark)
     inputDs.persist(StorageLevel.MEMORY_AND_DISK_SER_2)
 
     val (validDs, inValidDs) = EtlUtils.validateDataset(inputDs, ercsnStructSchema)
@@ -46,7 +44,7 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
       LogicUtils.transformErcsnInputData(validDs, inputDataContext.imsiMaster, batchId)
     logger.debug("%s".format(transformedData.show(truncate = false)))
 
-    (transformedData, invalidDsWithBatch)
+    (transformedData, invalidDsWithBatch, param)
   }
 
 }
