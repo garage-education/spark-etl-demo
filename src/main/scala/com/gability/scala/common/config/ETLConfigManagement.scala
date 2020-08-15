@@ -11,7 +11,9 @@ object ETLConfigManagement {
   //TODO: Analyze test/release/prod.Properties options
 
   //this
-  def getSparkSession(jobName: String, sessionConfig: Map[String, String] = Map.empty[String, String], enableHiveSupport: Boolean = false): SparkSession = {
+  def getSparkSession(jobName:           String,
+                      sessionConfig:     Map[String, String] = Map.empty[String, String],
+                      enableHiveSupport: Boolean = false): SparkSession = {
     val sessionBuilder: SparkSession.Builder = SparkSession
       .builder()
       .appName(jobName)
@@ -23,20 +25,22 @@ object ETLConfigManagement {
 
   def getJobConfig(jobId: String, jobName: String, batchId: String, configTableName: String = "job_config"): JobConfig = {
     val ss = getSparkSession(jobName)
-    val jobParams = getPrimaryModelParams(ss, jobId, configTableName, batchId)
-    JobConfig(jobParams, ss)
-  }
+    val jobParams: Map[String, String] = getPrimaryModelParams(ss, jobId, configTableName)
 
-  private def getPrimaryModelParams(ss: SparkSession, jobId: String, configTableName: String, batchId: String): Dataset[ConfigParam] = {
     val jobIdParsed = parseString(jobId, ZERO_LONG)
     val batchIdParsed = parseString(batchId, ZERO_LONG)
+
+    JobConfig(ConfigParam(jobIdParsed, batchIdParsed, jobParams), ss)
+  }
+
+  def getPrimaryModelParams(ss: SparkSession, jobId: String, configTableName: String): Map[String, String] = {
     import ss.implicits._
     ss.table(configTableName)
       .as[JobsParamConfig]
       .filter(jobs => jobs.job_id == jobId)
       .filter(conf => conf.config_seq == PRIMARY_PARAM_SEQ)
-      .map(p => ConfigParam(jobIdParsed, batchIdParsed, Map(p.config_type -> p.config_value)))
-      .as[ConfigParam]
+      .map(p => Map(p.config_type -> p.config_value))
+      .head
 
   }
 

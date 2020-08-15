@@ -20,7 +20,7 @@ case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
   import spark.implicits._
   def jobLogicRunner(): (Dataset[ErcsvInputData], Dataset[Row], JobParamRawDtl) = {
     logger.info("Start Reading json from param file")
-    val (batchId, jsonStr) = jobConfig.configDS.map(x => (x.batchId, x.jobParams("json"))).head() //handle error
+    val (jsonStr, batchId) = (jobConfig.configDS.jobParams("json"), jobConfig.configDS.batchId) //handle error
 
     logger.info("parsing json string as JobParamRawDtl")
     val param: JobParamRawDtl = getInputFileParam[JobParamRawDtl](jsonStr)

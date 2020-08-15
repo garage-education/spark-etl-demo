@@ -6,7 +6,7 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 
 object Metadata {
 
-  final case class JobConfig(configDS: Dataset[ConfigParam], sparkSession: SparkSession)
+  final case class JobConfig(configDS: ConfigParam, sparkSession: SparkSession)
 
   final case class ConfigParam(jobID: Long, batchId: Long, jobParams: Map[String, String])
 
@@ -20,7 +20,11 @@ object Metadata {
 
   case class JobParamRawDtl(sourceName: String, inputSource: InputSource, rejection: Rejection, targetSource: List[TargetSource])
 
-  final case class TargetSource(targetTable: String, targetSchema: String, partitionColumns: String, outputFormat: String, saveMode: String)
+  final case class TargetSource(targetTable:      String,
+                                targetSchema:     String,
+                                partitionColumns: String,
+                                outputFormat:     String,
+                                saveMode:         String)
 
   final case class SchemaDtl(columnName: String, columnType: String, isNullable: Boolean)
   final case class Rejection(

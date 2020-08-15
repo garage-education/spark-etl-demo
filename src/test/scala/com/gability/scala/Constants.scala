@@ -5,6 +5,7 @@ import java.sql.{Date, Timestamp}
 import com.gability.scala.common.metadata.Metadata._
 import com.gability.scala.Metadata.ErcsvInputData
 import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
+import org.apache.spark.sql.Row
 
 object Constants {
   val inputTestFile = "ercsn_4g_20200512182929_part02"
@@ -56,7 +57,7 @@ object Constants {
       )
     ),
     Rejection(
-      "/data/processed/3G_ERCSN/",
+      "/home/moustafa/Scala/spark-etl-demo/data/processed/3G_ERCSN/",
       "csv"
     ),
     List(TargetSource("Singl_KPI", "mod", "event_date,batch_id", "orc", "Append"))
@@ -245,5 +246,12 @@ object Constants {
       Date.valueOf("2020-06-15"),
       batchIdLong
     )
+  )
+
+  val expectedInvalid: Seq[Row] = Seq(
+    Row(null, "3214324134", "21421", "12421", "2", "2020-06-15 12:12:43", inputTestFile),
+    Row("214214", "12421412421124", null, "124", "1", "2020-06-15 12:12:43", inputTestFile),
+    Row("214214", "12421412421124", "11", null, "1", "2020-06-15 12:12:43", inputTestFile),
+    Row("214214", "12421412421124", "11", "444", "1", null, inputTestFile)
   )
 }
