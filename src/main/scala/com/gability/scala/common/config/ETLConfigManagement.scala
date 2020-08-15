@@ -11,9 +11,9 @@ object ETLConfigManagement {
   //TODO: Analyze test/release/prod.Properties options
 
   //this
-  def getSparkSession(jobName:           String,
-                      sessionConfig:     Map[String, String] = Map.empty[String, String],
-                      enableHiveSupport: Boolean = false): SparkSession = {
+  private[this] def getSparkSession(jobName:           String,
+                                    sessionConfig:     Map[String, String] = Map.empty[String, String],
+                                    enableHiveSupport: Boolean = true): SparkSession = {
     val sessionBuilder: SparkSession.Builder = SparkSession
       .builder()
       .appName(jobName)
