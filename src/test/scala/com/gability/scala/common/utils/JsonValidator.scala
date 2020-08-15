@@ -1,7 +1,7 @@
 package com.gability.scala.common.utils
 
 import com.gability.scala.common.metadata.Metadata.{JobParamRawDtl, SchemaDtl}
-import com.gability.scala.common.utils.Constants.{expectedJsonParsed, SimpleJsonObj}
+import com.gability.scala.Constants.{expectedJsonParsed, SimpleJsonObj}
 import com.gability.scala.common.utils.JsonExtractor._
 import org.scalatest._
 
@@ -20,6 +20,4 @@ class JsonValidator extends TraitTest {
       getJsonParsedFromFile[JobParamRawDtl]("config.json")
     actualJsonParsed shouldEqual expectedJsonParsed
   }
-//class JsonValidatorTest extends JsonValidator[JobParamRawDtl]("config.json") {}
-
 }

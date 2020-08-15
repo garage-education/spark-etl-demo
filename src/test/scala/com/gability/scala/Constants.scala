@@ -1,6 +1,6 @@
-package com.gability.scala.common.utils
+package com.gability.scala
 
-import com.gability.scala.common.metadata.Metadata.{InputSource, JobParamRawDtl, Rejection, SchemaDtl, TargetSource}
+import com.gability.scala.common.metadata.Metadata._
 import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
 
 object Constants {

@@ -2,7 +2,7 @@ package com.gability.scala.common.io
 
 import com.gability.scala.common.io.HadoopFileHandler._
 import com.gability.scala.common.metadata.Metadata.JobParamRawDtl
-import com.gability.scala.common.utils.Constants._
+import com.gability.scala.Constants._
 import com.gability.scala.common.utils.JsonExtractor.getJsonParsedFromFile
 import com.gability.scala.common.utils.TraitTest
 import com.holdenkarau.spark.testing.DatasetSuiteBase

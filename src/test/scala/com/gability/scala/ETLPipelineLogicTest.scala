@@ -4,8 +4,8 @@ import java.sql.Timestamp
 import com.gability.scala.Metadata.{Conf, ErcsvInputData}
 import com.gability.scala.common.config.ETLConfigManagement.getJobConfig
 import com.gability.scala.common.metadata.Metadata.JobConfig
-import com.gability.scala.common.utils.{TestingUtils, TraitTest}
-import com.gability.scala.common.utils.Constants._
+import com.gability.scala.common.utils.TraitTest
+import Constants._
 import com.gability.scala.common.utils.EnvConfig.parseEnvConfig
 import org.apache.spark.sql.{DataFrame, Row}
 import pureconfig.generic.auto._

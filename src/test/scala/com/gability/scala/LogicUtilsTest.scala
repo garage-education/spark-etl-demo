@@ -2,12 +2,12 @@ package com.gability.scala
 
 import java.sql.Timestamp
 
-import com.gability.scala.common.utils.Constants.etlInputTestFileName
-import com.gability.scala.common.utils.{TestingUtils, TraitTest}
+import Constants.etlInputTestFileName
+import com.gability.scala.common.utils.TraitTest
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import org.apache.spark.sql.{DataFrame, Row}
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
-import com.gability.scala.common.utils.Constants._
+import Constants._
 import com.gability.scala.Metadata.ErcsvInputData
 class LogicUtilsTest extends TraitTest {
 

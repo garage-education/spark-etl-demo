@@ -1,11 +1,10 @@
-package com.gability.scala.common.utils
+package com.gability.scala
 
 import com.gability.scala.common.utils.EtlUtils._
+import com.gability.scala.Constants._
 import com.gability.scala.Metadata._
-import com.gability.scala.common.utils.Constants._
-import com.holdenkarau.spark.testing.DatasetSuiteBase
+import com.gability.scala.common.utils.TraitTest
 import org.apache.spark.sql.{DataFrame, Dataset, Row}
-import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 
 class ETLUtilsTest extends TraitTest {
 
