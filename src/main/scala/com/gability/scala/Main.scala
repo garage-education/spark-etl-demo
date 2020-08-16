@@ -25,7 +25,7 @@ object Main extends Logging {
       param.targetSource.foreach(
         src =>
           valid.write
-            .partitionBy("event_date", "batch_id")
+            .partitionBy(src.partitionColumns.split(","): _*)
             .format(src.outputFormat)
             .mode(src.saveMode)
             .saveAsTable(src.targetSchema + "." + src.targetTable))

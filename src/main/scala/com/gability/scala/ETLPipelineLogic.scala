@@ -17,7 +17,6 @@ import org.apache.spark.storage.StorageLevel
 case class ETLPipelineLogic(jobConfig: JobConfig, props: Conf) extends Logging {
 
   val spark: SparkSession = jobConfig.sparkSession
-  import spark.implicits._
   def jobLogicRunner(): (Dataset[ErcsvInputData], Dataset[Row], JobParamRawDtl) = {
     logger.info("Start Reading json from param file")
     val (jsonStr, batchId) = (jobConfig.configDS.jobParams("json"), jobConfig.configDS.batchId) //handle error
